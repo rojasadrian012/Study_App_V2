@@ -37,6 +37,26 @@ const consultarPorCodigo = async function (codigo) {
   }
 };
 
+const consultarPorCodigoTheme = async function (codigo) {
+  console.log("consultar 1 propiedad de tema por codigo del tema");
+  try {
+    const themes_properties = await sequelize.query(`SELECT * 
+                                                    FROM themes_properties
+                                                    WHERE 1=1
+                                                    AND theme_id=${codigo}
+                                                    ORDER BY id`);
+    if (themes_properties && themes_properties[0]) {
+      return themes_properties[0];
+    } else {
+      return [];
+    }
+
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const actualizar = async function (
   id,
   theme_id,
@@ -69,7 +89,10 @@ const actualizar = async function (
 const eliminar = async function (codigo) {
   console.log("eliminar propiedad de tema");
   try {
-    ThemesPropertiesModel.destroy({ where: { id: codigo } }, { truncate: false });
+    ThemesPropertiesModel.destroy(
+      { where: { id: codigo } },
+      { truncate: false }
+    );
   } catch (error) {
     console.log(error);
     throw error;
@@ -81,4 +104,5 @@ module.exports = {
   busquedaPorCodigo: consultarPorCodigo,
   actualizar,
   eliminar,
+  consultarPorCodigoTheme,
 };

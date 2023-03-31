@@ -55,6 +55,31 @@ const consultarPorCodigo = async function (req, res) {
   }
 };
 
+const consultarPorCodigoTheme = async function (req, res) {
+  console.log("consultar 1 propiedad de tema por codigo del tema controller");
+  try {
+    const themesPropertiesModelResult =
+      await themesPropertiesService.consultarPorCodigoTheme(req.params.filtro || "");
+    if (themesPropertiesModelResult) {
+      res.json({
+        success: true,
+        themes_properties: themesPropertiesModelResult,
+      });
+    } else {
+      res.json({
+        success: true,
+        themes_properties: [],
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
 const actualizar = async function (req, res) {
   console.log("actualizar propiedad de tema controller");
   let themesPropertiesReturn = null;
@@ -99,4 +124,5 @@ module.exports = {
   busquedaPorCodigo: consultarPorCodigo,
   actualizar,
   eliminar,
+  consultarPorCodigoTheme
 };
