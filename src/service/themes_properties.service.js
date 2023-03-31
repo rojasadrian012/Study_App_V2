@@ -3,7 +3,6 @@ const { ThemesPropertiesModel } = require("../model/themes_properties.model");
 
 const listar = async function (textoBuscar) {
   console.log("listar propiedades de temas");
-  //probando git
   try {
     const themes_properties = await sequelize.query(`SELECT * 
       FROM themes_properties
