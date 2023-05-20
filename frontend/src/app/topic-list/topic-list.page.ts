@@ -4,12 +4,12 @@ import { AlertController, Platform, ToastController } from '@ionic/angular';
 import axios from 'axios';
 
 @Component({
-  selector: 'app-theme-list',
-  templateUrl: './theme-list.page.html',
-  styleUrls: ['./theme-list.page.scss'],
+  selector: 'app-topic-list',
+  templateUrl: './topic-list.page.html',
+  styleUrls: ['./topic-list.page.scss'],
 })
-export class ThemeListPage implements OnInit {
-  temas: any = [];
+export class TopicListPage implements OnInit {
+  topicos: any = [];
   private platform = inject(Platform);
   public alertButtons = ['Aceptar', 'Cancelar'];
 
@@ -26,7 +26,7 @@ export class ThemeListPage implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
-    this.getThemes();
+    this.getTopics();
   }
 
   ngOnInit() {}
@@ -39,7 +39,7 @@ export class ThemeListPage implements OnInit {
         {
           text: 'Aceptar',
           handler: () => {
-            this.deleteTheme(id);
+            this.deleteTopic(id);
           },
         },
         {
@@ -53,7 +53,7 @@ export class ThemeListPage implements OnInit {
     await alert.present();
   }
 
-  getThemes() {
+  getTopics() {
     let token = localStorage.getItem('token');
     let config = {
       headers: {
@@ -61,10 +61,10 @@ export class ThemeListPage implements OnInit {
       },
     };
     axios
-      .get('http://localhost:3000/themes/list', config)
+      .get('http://localhost:3000/topics/list', config)
       .then((result) => {
         if (result.data.success == true) {
-          this.temas = result.data.temas;
+          this.topicos = result.data.topicos;
         } else {
           console.log(result.data.error);
         }
@@ -74,7 +74,7 @@ export class ThemeListPage implements OnInit {
       });
   }
 
-  deleteTheme(id: any) {
+  deleteTopic(id: any) {
     let token = localStorage.getItem('token');
     let config = {
       headers: {
@@ -82,11 +82,11 @@ export class ThemeListPage implements OnInit {
       },
     };
     axios
-      .delete('http://localhost:3000/themes/delete/' + id, config)
+      .delete('http://localhost:3000/topics/delete/' + id, config)
       .then((result) => {
         if (result.data.success == true) {
-          this.presentToast('Tema Eliminado');
-          this.getThemes();
+          this.presentToast('Topico Eliminado');
+          this.getTopics();
         } else {
           this.presentToast(result.data.error);
         }

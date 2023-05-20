@@ -6,21 +6,31 @@ import { DataService, Message } from '../services/data.service';
 import axios from 'axios';
 
 @Component({
-  selector: 'app-theme-edit',
-  templateUrl: './theme-edit.page.html',
-  styleUrls: ['./theme-edit.page.scss'],
+  selector: 'app-topic-edit',
+  templateUrl: './topic-edit.page.html',
+  styleUrls: ['./topic-edit.page.scss'],
 })
-export class ThemeEditPage implements OnInit {
+export class TopicEditPage implements OnInit {
   public message!: Message;
+  private data = inject(DataService);
   private activatedRoute = inject(ActivatedRoute);
   private platform = inject(Platform);
-  theme: any = '';
-  accion = 'Agregar Tema';
+  topic: any = '';
+  accion = 'Agregar Topico';
 
   constructor(
     private toastController: ToastController,
     private router: Router
   ) {}
+
+  ionViewWillEnter(): void {
+    //verificar si el usuario no esta logueado
+    let token = localStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/login']);
+      return;
+    }
+  }
 
   ngOnInit() {
     let token = localStorage.getItem('token');
@@ -33,16 +43,16 @@ export class ThemeEditPage implements OnInit {
     const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
     // this.message = this.data.getMessageById(parseInt(id, 10));
     axios
-      .get('http://localhost:3000/themes/buscarPorCodigo/' + id, config)
+      .get('http://localhost:3000/topics/buscarPorCodigo/' + id, config)
       .then((result) => {
         if (result.data.success == true) {
           if (id !== '0') {
-            this.accion = 'Editar Tema';
+            this.accion = 'Editar Topico';
           }
-          if (result.data.theme != null) {
-            this.theme = result.data.theme;
+          if (result.data.topic != null) {
+            this.topic = result.data.topic;
           } else {
-            this.theme = {};
+            this.topic = {};
           }
         } else {
           console.log(result.data.error);
@@ -58,7 +68,7 @@ export class ThemeEditPage implements OnInit {
     return isIos ? 'Inbox' : '';
   }
 
-  saveUser() {
+  saveTopic() {
     let token = localStorage.getItem('token');
     let config = {
       headers: {
@@ -67,20 +77,21 @@ export class ThemeEditPage implements OnInit {
     };
     let fecha = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
     var data = {
-      id: this.theme.id,
+      id: this.topic.id,
+      topic_id: this.topic.id,
       create_date: fecha,
-      name: this.theme.name,
-      description: this.theme.description,
-      keywords: this.theme.keywords,
-      owner_user_id: 1,
+      name: this.topic.name,
+      order: this.topic.order,
+      priority: this.topic.priority,
+      color: this.topic.color,
+      //owner_user_id: this.topico.owner_user_id,
     };
-    console.log('theme: ', data);
     axios
-      .post('http://localhost:3000/themes/update', data, config)
+      .post('http://localhost:3000/topics/update', data, config)
       .then(async (result) => {
         if (result.data.success == true) {
-          this.presentToast('Tema Guardado');
-          this.router.navigate(['/theme-list']);
+          this.presentToast('Topico Guardado');
+          this.router.navigate(['/topic-list']);
         } else {
           this.presentToast(result.data.error);
         }

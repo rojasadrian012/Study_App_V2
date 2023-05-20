@@ -82,6 +82,7 @@ const eliminar = async function (codigo) {
   }
 };
 
+
 //lo que esta entre la llave es json
 module.exports = {
   listar,

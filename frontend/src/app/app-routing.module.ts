@@ -15,6 +15,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'login',
+    loadChildren: () =>
+      import('./login/login.module').then(
+        (m) => m.LoginPageModule
+      ),
+  },
+  {
     path: 'user-edit/:id',
     loadChildren: () =>
       import('./user-edit/user-edit.module').then(
@@ -26,6 +33,20 @@ const routes: Routes = [
     loadChildren: () =>
       import('./user-list/user-list.module').then(
         (m) => m.UserListPageModule
+      ),
+  },
+  {
+    path: 'topic-list',
+    loadChildren: () =>
+      import('./topic-list/topic-list.module').then(
+        (m) => m.TopicListPageModule
+      ),
+  },
+  {
+    path: 'topic-edit/:id',
+    loadChildren: () =>
+      import('./topic-edit/topic-edit.module').then(
+        (m) => m.TopicEditPageModule
       ),
   },
   {

@@ -82,7 +82,7 @@ const eliminar = async function (codigo) {
   try {
     //pide tb poner topic_id (??)
     TopicsModel.destroy(
-      { where: { id: codigo, topic_id: codigo } },
+      { where: { id: codigo } },
       { truncate: false }
     );
   } catch (error) {

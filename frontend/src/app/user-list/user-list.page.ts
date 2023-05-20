@@ -19,10 +19,17 @@ export class UserListPage implements OnInit {
 
   constructor(
     private toastController: ToastController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private router: Router
   ) {}
 
   ionViewWillEnter(): void {
+    //verificar si el usuario no esta logueado
+    let token = localStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/login']);
+      return;
+    }
     this.getUsers();
   }
 
@@ -51,8 +58,14 @@ export class UserListPage implements OnInit {
   }
 
   getUsers() {
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
     axios
-      .get('http://localhost:3000/users/list')
+      .get('http://localhost:3000/users/list', config)
       .then((result) => {
         if (result.data.success == true) {
           this.usuarios = result.data.usuarios;
@@ -66,8 +79,14 @@ export class UserListPage implements OnInit {
   }
 
   deleteUser(id: any) {
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
     axios
-      .delete('http://localhost:3000/users/delete/' + id)
+      .delete('http://localhost:3000/users/delete/' + id, config)
       .then((result) => {
         if (result.data.success == true) {
           this.presentToast('Usuario Eliminado');

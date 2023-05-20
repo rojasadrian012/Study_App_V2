@@ -23,12 +23,27 @@ export class UserEditPage implements OnInit {
     private router: Router
   ) {}
 
+  ionViewWillEnter(): void {
+    //verificar si el usuario no esta logueado
+    let token = localStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/login']);
+      return;
+    }
+  }
+
   ngOnInit() {
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
     //con este comando se recupera el id que se pasa
     const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
     // this.message = this.data.getMessageById(parseInt(id, 10));
     axios
-      .get('http://localhost:3000/users/buscarPorCodigo/' + id)
+      .get('http://localhost:3000/users/buscarPorCodigo/' + id, config)
       .then((result) => {
         if (result.data.success == true) {
           if (id !== '0') {
@@ -54,6 +69,12 @@ export class UserEditPage implements OnInit {
   }
 
   saveUser() {
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
     console.log('usuario: ', this.usuario);
     var data = {
       id: this.usuario.id,
@@ -62,7 +83,7 @@ export class UserEditPage implements OnInit {
       email: this.usuario.email,
     };
     axios
-      .post('http://localhost:3000/users/update', data)
+      .post('http://localhost:3000/users/update', data, config)
       .then(async (result) => {
         if (result.data.success == true) {
           this.presentToast('Usuario Guardado');

@@ -1,9 +1,18 @@
-const themesController = require('../../controller/themes/themes.controller')
+const themesController = require("../../controller/themes/themes.controller");
+const authMiddleware = require("../../middleware/auth.controller");
 //require es como un import para referenciar archivos
 
-module.exports = function(app){
-    app.get("/themes/list", themesController.listar);
-    app.get("/themes/buscarPorCodigo/:filtro", themesController.busquedaPorCodigo);
-    app.post("/themes/update", themesController.actualizar);
-    app.delete("/themes/delete/:filtro", themesController.eliminar);
-}
+module.exports = function (app) {
+  app.get("/themes/list", authMiddleware.auth, themesController.listar);
+  app.get(
+    "/themes/buscarPorCodigo/:filtro",
+    authMiddleware.auth,
+    themesController.busquedaPorCodigo
+  );
+  app.post("/themes/update", authMiddleware.auth, themesController.actualizar);
+  app.delete(
+    "/themes/delete/:filtro",
+    authMiddleware.auth,
+    themesController.eliminar
+  );
+};

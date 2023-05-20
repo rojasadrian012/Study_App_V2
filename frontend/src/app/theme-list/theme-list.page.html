@@ -28,7 +28,7 @@
       ></ion-icon>
 
       <!-- ELIMINAR TEMA-->
-      <ion-icon slot="end" name="trash"> </ion-icon>
+      <ion-icon (click)="confirmDelete(tema.id)"  slot="end" name="trash"> </ion-icon>
     </ion-item>
   </ion-list>
 </ion-card>
