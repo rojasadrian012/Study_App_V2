@@ -5,7 +5,7 @@
 -- Dumped from database version 14.5
 -- Dumped by pg_dump version 14.5
 
--- Started on 2023-11-07 23:06:17
+-- Started on 2023-11-07 23:13:00
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -401,17 +401,9 @@ COPY public.topics (id, create_date, name, topic_id, "order", priority, color, o
 --
 
 COPY public.users (id, name, last_name, avatar, email, password, deleted, token) FROM stdin;
-7	modif user desde postman aaa2	modif apellido desde postman aaa2	3223	nuevo@gmail.com aaa	1238 aaa	t	\N
-8	nuevodesdewebjey	desedeskjsdnk	\N	nuevo@gmail.com	\N	t	\N
-9	para	eliminar	\N	elimad@gmail.com	\N	t	\N
-10	hol	udf	\N	iofcs	\N	t	\N
-11	gfdhg	fhsf	\N	fsh	\N	t	\N
-12	hdgd	dghfghdf	\N	43535	\N	t	\N
-3	victor	ortiz	a	victor@gmail.com	789	t	\N
-1	Luis	Acosta	\N	gabi@gmail.com	123	f	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTHVpcyIsImxhc3RfbmFtZSI6IkFjb3N0YSIsImF2YXRhciI6bnVsbCwiZW1haWwiOiJnYWJpQGdtYWlsLmNvbSIsImlhdCI6MTY5OTQwNzM0NX0.3H4BuIcJbuiQVNoSkq0DJXJAEnyWRD9o9J56y8nPVoA
-4	nuevo user desde postman	apellido desde postman	null	nuevo@gmail.com	1238	t	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibnVldm8gdXNlciBkZXNkZSBwb3N0bWFuIiwibGFzdF9uYW1lIjoiYXBlbGxpZG8gZGVzZGUgcG9zdG1hbiIsImF2YXRhciI6Im51bGwiLCJlbWFpbCI6Im51ZXZvQGdtYWlsLmNvbSIsImlhdCI6MTY4NDU0MDg0N30.8IugiqYJSp_-ygKCsYfxFPR8yXj5pyi5c01-exYlu_Q
+1	Luis	Acosta	\N	gabi@gmail.com	123	f	\N
+2	Efra	God	ava	efragod@gmail.com	456	f	\N
 13	Adrian	Portillo	\N	adrian@gmail.com	\N	f	\N
-2	Iria	Orrego	ava	iriaorrego@gmail.com	456	f	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaXJpYSIsImxhc3RfbmFtZSI6Im9ycmVnbyIsImF2YXRhciI6ImF2YSIsImVtYWlsIjoiaXJpYW9ycmVnb0BnbWFpbC5jb20iLCJpYXQiOjE2ODM5MDE4Mzh9.vBGazZz2qH5-LC5jufjOV1eQ2OV8aOBCmDIZeMdyEOo
 \.
 
 
@@ -604,7 +596,7 @@ ALTER TABLE ONLY public.topics
     ADD CONSTRAINT topics_topic_id_fkey FOREIGN KEY (topic_id) REFERENCES public.topics(id);
 
 
--- Completed on 2023-11-07 23:06:17
+-- Completed on 2023-11-07 23:13:00
 
 --
 -- PostgreSQL database dump complete
