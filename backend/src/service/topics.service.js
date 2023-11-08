@@ -1,5 +1,6 @@
 const { sequelize } = require("../connection");
 const { TopicsModel } = require("../model/topics.model");
+const { Comments } = require('../model/comments.model');
 
 const listar = async function (textoBuscar) {
   console.log("listar topicos");
@@ -91,9 +92,93 @@ const eliminar = async function (codigo) {
   }
 };
 
+const listarComentarios = async function (textoBuscar) {
+  console.log("listar comentarios topicos service");
+  try {
+    const comentarios = await sequelize.query(
+      'SELECT c.id, c.text, c.topic_id, c.user_id, c.created_at, u.name, u.last_name FROM comments c JOIN users u ON c.user_id = u.id WHERE c.topic_id = :topicId',
+      {
+        replacements: { topicId: textoBuscar },
+        type: sequelize.QueryTypes.SELECT
+      }
+    );
+
+    if (comentarios && comentarios.length > 0) {
+      return comentarios;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const comentarTopicoService = async function (comentarioData) {
+  try {
+    const { text, topic_id, user_id } = comentarioData;
+
+    // Utilizar el modelo de Sequelize para insertar un comentario
+    const newComment = await Comments.create({
+      text,
+      topic_id,
+      user_id,
+    });
+
+    // `newComment` contendrá la instancia del comentario recién creado
+
+    return newComment; // Puedes retornar el comentario insertado si es necesario
+  } catch (error) {
+    throw new Error("Error al guardar el comentario en la base de datos");
+  }
+};
+
+const compartirUsuariosService = async function (dataSharedTopics) {
+  try {
+    const { user_shared_id, topic_id, user_destination_ids } = dataSharedTopics;
+
+    const insertQueries = user_destination_ids.map(user_destination_id => {
+      return `INSERT INTO shared_topics (user_shared_id, topic_id, user_destination_id) VALUES (${user_shared_id}, ${topic_id}, ${user_destination_id})`;
+    });
+
+    const insertQuery = insertQueries.join('; '); // Unir las consultas separadas por punto y coma
+
+    await sequelize.query(insertQuery);
+
+    return "Datos insertados correctamente";
+  } catch (error) {
+    throw new Error("Error al insertar los datos en la base de datos en el servicio 810");
+  }
+};
+
+const listarSharedMeService = async function (userId) {
+  console.log("listar topicos");
+  try {
+    const topics = await sequelize.query(`
+      SELECT t.*
+      FROM shared_topics st
+      INNER JOIN topics t ON st.topic_id = t.id
+      WHERE st.user_destination_id = :userId
+      ORDER BY t.id`, {
+        replacements: { userId: userId },
+        type: sequelize.QueryTypes.SELECT
+      });
+
+    return topics;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+
 module.exports = {
   listar,
   busquedaPorCodigo: consultarPorCodigo,
   actualizar,
   eliminar,
+  listarComentarios,
+  comentarTopicoService,
+  compartirUsuariosService,
+  listarSharedMeService,
 };

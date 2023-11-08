@@ -81,6 +81,8 @@ export class HomePage implements OnInit {
       .then((result) => {
         if (result.data.success == true) {
           this.temas = result.data.temas;
+          console.log(this.temas);
+          
         } else {
           console.log(result.data.error);
           this.presentToast(result.data.error);

@@ -20,7 +20,7 @@ export class LoginPage implements OnInit {
   constructor(
     private toastController: ToastController,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     //con este comando se recupera el id que se pasa
@@ -31,6 +31,7 @@ export class LoginPage implements OnInit {
         if (result.data.success == true) {
           if (result.data.usuario != null) {
             this.usuario = result.data.usuario;
+
           } else {
             this.usuario = {};
           }
@@ -56,10 +57,11 @@ export class LoginPage implements OnInit {
     };
     axios
       .post('http://localhost:3000/user/login', data)
-      .then(async (result) => {
+      .then(async (result) => {        
         if (result.data.success == true) {
           this.presentToast('Bienvenido a StudyApp');
           localStorage.setItem('token', result.data.token);
+          localStorage.setItem('user_id', result.data.user_id);
           this.router.navigate(['/home']);
         } else {
           this.presentToast(result.data.error);

@@ -15,6 +15,7 @@
 </ion-refresher>
 
 <ion-content [fullscreen]="true" *ngIf="temas">
+  <!-- Botones de Navegacion -->
   <ion-tabs>
     <ion-tab-bar slot="bottom">
       <ion-tab-button [routerLink]="'/topic-list'">
@@ -31,14 +32,13 @@
       </ion-tab-button>
     </ion-tab-bar>
   </ion-tabs>
+
   <ion-card>
     <ion-accordion-group>
       <!-- Impresion de tema -->
       <ion-accordion *ngFor="let tema of temas">
         <ion-item slot="header" color="light">
-          <ion-label
-            >{{tema.id}} - {{tema.name}} - {{tema.description}}</ion-label
-          >
+          <ion-label>{{tema.id}} - {{tema.name}} - {{tema.description}}</ion-label>
         </ion-item>
         <!-- Impresion de propiedades del tema -->
         <div *ngFor="let tema_propiedad of temas_propiedades" slot="content">

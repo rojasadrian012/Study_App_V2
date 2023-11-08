@@ -64,10 +64,15 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'topic-details/:id',
+    loadChildren: () => import('./topic-details/topic-details.module').then(m => m.TopicDetailsPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
   },
+
 ];
 
 @NgModule({
@@ -76,4 +81,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

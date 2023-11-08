@@ -38,3 +38,16 @@ h1 {
 p {
   line-height: 22px;
 }
+
+.icon-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.comment-author {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 15px;
+}

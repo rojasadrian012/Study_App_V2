@@ -118,10 +118,10 @@ const login = async function (req, res) {
     // Buscar en la DB el usuario con correo y contraseña proporcionados
     const userDB = await sequelize.query(
       "SELECT * FROM users WHERE email ='" +
-        req.body.email +
-        "' AND password =  '" +
-        req.body.password +
-        "'"
+      req.body.email +
+      "' AND password =  '" +
+      req.body.password +
+      "'"
     );
     console.log("users", userDB);
     let user = null;
@@ -135,7 +135,9 @@ const login = async function (req, res) {
           error: "Usuario ya está autenticado",
         });
         return;
-      } // Generar un token de autenticación
+      } 
+      const user_id = userDB[0][0].id
+      // Generar un token de autenticación
       let token = jwt.sign(
         {
           codigo: user.codigo,
@@ -153,6 +155,7 @@ const login = async function (req, res) {
       res.json({
         success: true,
         token,
+        user_id
       });
     } else {
       // Si no se encuentra el usuario en la DB, devolver la respuesta con el mensaje de error

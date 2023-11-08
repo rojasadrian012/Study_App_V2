@@ -96,9 +96,103 @@ const eliminar = async function (req, res) {
   }
 };
 
+const listarComentarios = async function (req, res) {
+  console.log("listar comentarios topicos controller", req, res);
+  try {
+    const comments = await topicsService.listarComentarios(
+      req.params.topic_id || ""
+    );
+    if (comments) {
+      res.json({
+        success: true,
+        topicos: comments,
+      });
+    } else {
+      res.json({
+        success: true,
+        topicos: [],
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({
+      sucess: false,
+      error: error.message,
+    });
+  }
+};
+
+const comentarTopicoController = async function (req, res) {
+  try {
+    // Recibir los datos del comentario del cuerpo de la solicitud
+    const comentarioData = req.body;
+
+    // Llamar al servicio para guardar el comentario
+    const topicsReturn = await topicsService.comentarTopicoService(comentarioData);
+
+    res.json({
+      success: true,
+      topic: topicsReturn,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+const compartirUsuariosController = async function (req, res) {
+  try {
+    const dataSharedTopics = req.body;
+
+    const sharedTopicsReturn = await topicsService.compartirUsuariosService(dataSharedTopics);
+
+    res.json({
+      success: true,
+      topic: sharedTopicsReturn,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+const listarSharedMeController = async function (req, res) {
+  console.log("listarSharedMe topicos controller");
+  try {
+    const topics = await topicsService.listarSharedMeService(req.params.id || "");
+    if (topics) {
+      res.json({
+        success: true,
+        topicos: topics,
+      });
+    } else {
+      res.json({
+        success: true,
+        topicos: [],
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({
+      sucess: false,
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   listar,
   busquedaPorCodigo: consultarPorCodigo,
   actualizar,
   eliminar,
+  listarComentarios,
+  comentarTopicoController,
+  compartirUsuariosController,
+  listarSharedMeController,
 };

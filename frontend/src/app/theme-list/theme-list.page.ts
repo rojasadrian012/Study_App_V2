@@ -108,4 +108,49 @@ export class ThemeListPage implements OnInit {
     });
     await toast.present();
   }
+
+  
+  //Ordenar visualmente
+  reorder(event: any) {
+    const moverItem = this.temas.splice(event.detail.from, 1)[0];
+    this.temas.splice(event.detail.to, 0, moverItem);
+    event.detail.complete();
+  }
+
+  //ordenamientos
+  sortAZ() {
+    this.temas.sort((a: any, b: any) => {
+      const nameA = a.name.toUpperCase();
+      const nameB = b.name.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
+  }
+
+  sortZA() {
+    this.temas.sort((a: any, b: any) => {
+      const nameA = a.name.toUpperCase();
+      const nameB = b.name.toUpperCase();
+      if (nameA > nameB) {
+        return -1;
+      }
+      if (nameA < nameB) {
+        return 1;
+      }
+      return 0;
+    });
+  }
+
+  sortIdAsc() {
+    this.temas.sort((a: any, b: any) => a.id - b.id);
+  }
+
+  sortIdDesc() {
+    this.temas.sort((a: any, b: any) => b.id - a.id);
+  }
 }

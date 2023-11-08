@@ -1,13 +1,13 @@
-const {Sequelize} = require("sequelize");
+const { Sequelize } = require("sequelize");
 //el sequileze que se recupera debe ser en minuscula, pq hay dos sequelize
-                                //db, user, password
-const sequelize = new Sequelize("db_study_app", 'postgres', 'admin', {
+//db, user, password
+const sequelize = new Sequelize("data_base_lp5", 'postgres', 'admin', {
     host: 'localhost',
-    port : 5433,
-    dialect : 'postgres'
+    port: 5432,
+    dialect: 'postgres'
 });
 
-const testConnection = function(){
+const testConnection = function () {
     try {
         sequelize.authenticate();
         console.log("Conexion con exito");

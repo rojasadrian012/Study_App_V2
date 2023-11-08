@@ -1,38 +1,66 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button
-        [text]="getBackButtonText()"
-        defaultHref="/"
-      ></ion-back-button>
+      <ion-back-button [text]="getBackButtonText()" defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title> Topicos - Gabriela Ortega </ion-title>
+    <ion-title> Topicos</ion-title>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" *ngIf="topicos">
+
   <ion-card>
+    <ion-card-header class="comment-author">
+      Ordenar por:
+    </ion-card-header>
+    <ion-card-content>
+      <div class="icon-row">
+        <ion-button color="dark" fill="outline" (click)="sortAZ()">A-Z</ion-button>
+        <ion-button color="dark" fill="outline" (click)="sortZA()">Z-A</ion-button>
+        <ion-button color="dark" fill="outline" (click)="sortIdAsc()">ID Asc</ion-button>
+        <ion-button color="dark" fill="outline" (click)="sortIdDesc()">ID Desc</ion-button>
+      </div>
+    </ion-card-content>
+
     <ion-list>
-      <!-- NOMBRE Y APELLIDO DEL TOPICO-->
-      <ion-item *ngFor="let topico of topicos">
-        <ion-label [routerLink]="'/user-edit/'+topico.id"
-          >{{topico.id}} - {{topico.name}} - {{topico.color}}</ion-label
-        >
-        <!-- EDITAR TOPICO-->
+      <ion-reorder-group [disabled]="false" (ionItemReorder)="reorder($event)">
+        <ion-item *ngFor="let topico of topicos">
+          <ion-label>{{topico.id}} - {{topico.name}} - {{topico.color}}</ion-label>
+          <ion-buttons slot="end">
+            <!-- Visualizar -->
+            <ion-button [routerLink]="'/topic-details/' + topico.id">
+              <ion-icon slot="icon-only" name="eye-outline" style="font-size: 30px;"></ion-icon>
+            </ion-button>
 
-        <ion-icon
-          slot="end"
-          name="create"
-          [routerLink]="'/topic-edit/'
-        +
-        topico.id"
-        ></ion-icon>
-
-        <!-- ELIMINAR TOPICO-->
-        <ion-icon (click)="confirmDelete(topico.id)" slot="end" name="trash">
-        </ion-icon>
-      </ion-item>
+            <!-- ELIMINAR TOPICO -->
+            <ion-button (click)="confirmDelete(topico.id)">
+              <ion-icon slot="icon-only" name="trash-outline" style="font-size: 30px;"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-reorder slot="end"></ion-reorder>
+        </ion-item>
+      </ion-reorder-group>
     </ion-list>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header class="comment-author">
+      {{textoTopicosCompartidos}}
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let topico of topicosCompartidosConmigo">
+          <ion-label>{{topico.id}} - {{topico.name}} - {{topico.color}}</ion-label>
+          <ion-buttons slot="end">
+            <!-- Visualizar -->
+            <ion-button [routerLink]="'/topic-details/' + topico.id">
+              <ion-icon slot="icon-only" name="eye-outline" style="font-size: 30px;"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
   </ion-card>
 
   <!-- AGREGAR TOPICO-->
