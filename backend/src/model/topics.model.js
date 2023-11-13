@@ -8,39 +8,44 @@ const TopicsModel = sequelize.define("Topics", {
     primaryKey: true,
     autoIncrement: true,
   },
-  create_date:{
+  create_date: {
     type: DataTypes.TIME,
-    allowNull:false
+    allowNull: false
   },
-  name:{
+  name: {
     type: DataTypes.STRING,
-    allowNull:true
+    allowNull: true
   },
-  topic_id:{
+  topic_id: {
     type: DataTypes.STRING,
-    allowNull:true
+    allowNull: true
   },
-  order:{
+  order: {
     type: DataTypes.INTEGER,
-    allowNull:true
+    allowNull: true
   },
-  priority:{
+  priority: {
     type: DataTypes.INTEGER,
-    allowNull:true
+    allowNull: true
   },
-  color:{
+  color: {
     type: DataTypes.STRING,
-    allowNull:true
+    allowNull: true
   },
-  owner_user_id:{
+  owner_user_id: {
     type: DataTypes.INTEGER,
-    allowNull:true
+    allowNull: true
   },
-},{
-    tableName: 'topics',
-    timestamps: false
+  order_index: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0
+  },
+}, {
+  tableName: 'topics',
+  timestamps: false
 });
 
 module.exports = {
-    TopicsModel
+  TopicsModel
 };

@@ -47,5 +47,9 @@ module.exports = function (app) {
     authMiddleware.auth,
     topicsController.actualizarOrden
   );
+  app.post("/topics/update-order",
+    authMiddleware.auth,
+    topicsController.actualizarOrden
+  );
 
 };

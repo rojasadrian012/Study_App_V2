@@ -17,7 +17,7 @@ export class ThemeListPage implements OnInit {
     private toastController: ToastController,
     private alertController: AlertController,
     private router: Router
-  ) {}
+  ) { }
 
   ionViewWillEnter(): void {
     //verificar si el usuario no esta logueado
@@ -29,7 +29,7 @@ export class ThemeListPage implements OnInit {
     this.getThemes();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   async confirmDelete(id: string) {
     const alert = await this.alertController.create({
@@ -109,13 +109,33 @@ export class ThemeListPage implements OnInit {
     await toast.present();
   }
 
-  
-  //Ordenar visualmente
+  // Agrega una función para guardar el nuevo orden en el backend
+  saveOrder() {
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    const orderData = this.temas.map((tema: any, index: any) => ({ id: tema.id, order_index: index }));
+    axios.post('http://localhost:3000/themes/update-order', orderData, config)
+      .then((result) => {
+        if (result.data.success) {
+          this.presentToast('Orden guardado con éxito');
+        }
+      })
+      .catch((error) => {
+        this.presentToast('Error al guardar el orden: ' + error.message);
+      });
+  }
+
+  // Modifica la función de reordenamiento para que llame a saveOrder
   reorder(event: any) {
     const moverItem = this.temas.splice(event.detail.from, 1)[0];
     this.temas.splice(event.detail.to, 0, moverItem);
     event.detail.complete();
   }
+
 
   //ordenamientos
   sortAZ() {

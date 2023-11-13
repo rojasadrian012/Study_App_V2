@@ -8,7 +8,7 @@ const listar = async function (textoBuscar) {
       FROM themes
       WHERE 1=1
         AND UPPER(name) LIKE UPPER('%${textoBuscar}%')
-      ORDER BY id`);
+      ORDER BY order_index ASC`);
     if (themes && themes[0]) {
       return themes[0];
     } else {
@@ -77,9 +77,26 @@ const eliminar = async function (codigo) {
   }
 };
 
+const actualizarOrden = async function (orderData) {
+  const transaction = await sequelize.transaction();
+  try {
+    for (const item of orderData) {
+      await ThemesModel.update({ order_index: item.order_index }, {
+        where: { id: item.id },
+        transaction
+      });
+    }
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
+
 module.exports = {
   listar,
   busquedaPorCodigo: consultarPorCodigo,
   actualizar,
   eliminar,
+  actualizarOrden,
 };

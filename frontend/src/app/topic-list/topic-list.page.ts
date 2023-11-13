@@ -74,7 +74,7 @@ export class TopicListPage implements OnInit {
         if (result.data.success == true) {
           this.topicos = result.data.topicos;
           console.log(this.topicos);
-          
+
         } else {
           console.log(result.data.error);
         }
@@ -127,21 +127,6 @@ export class TopicListPage implements OnInit {
     event.detail.complete();
 
   }
-
-  updateOrderInBackend() {
-    // Aquí, envía los tópicos con el nuevo orden al backend
-    let token = localStorage.getItem('token');
-    let config = {
-      headers: {
-        Authorization: token,
-      },
-    };
-
-    axios.post('http://localhost:3000/topics/updateOrder', this.topicos, config)
-      .then(response => console.log(response))
-      .catch(error => console.error(error));
-  }
-
 
   sortAZ() {
     this.topicos.sort((a: any, b: any) => {
@@ -206,7 +191,22 @@ export class TopicListPage implements OnInit {
   }
 
   saveOrder() {
-    this.updateOrderInBackend();
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    const orderData = this.topicos.map((tema: any, index: any) => ({ id: tema.id, order_index: index }));
+    axios.post('http://localhost:3000/topics/update-order', orderData, config)
+      .then((result) => {
+        if (result.data.success) {
+          this.presentToast('Orden guardado con éxito');
+        }
+      })
+      .catch((error) => {
+        this.presentToast('Error al guardar el orden: ' + error.message);
+      });
   }
-  
+
 }

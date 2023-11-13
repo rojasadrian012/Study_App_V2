@@ -93,9 +93,24 @@ const eliminar = async function (req, res) {
   }
 };
 
+const actualizarOrden = async function (req, res) {
+  try {
+    await themesService.actualizarOrden(req.body);
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   listar,
   busquedaPorCodigo: consultarPorCodigo,
   actualizar,
   eliminar,
+  actualizarOrden,
 };

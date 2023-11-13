@@ -26,8 +26,10 @@
     <ion-list>
       <ion-reorder-group [disabled]="false" (ionItemReorder)="reorder($event)">
         <ion-item *ngFor="let topico of topicos">
-          <ion-label  [style.color]="topico.color">{{topico.id}} - {{topico.name}}</ion-label>
+          <ion-label [style.color]="topico.color">{{topico.id}} - {{topico.name}}</ion-label>
           <ion-buttons slot="end">
+            <input type="color" [(ngModel)]="topico.color" />
+
             <!-- Visualizar -->
             <ion-button [routerLink]="'/topic-details/' + topico.id">
               <ion-icon slot="icon-only" name="eye-outline" style="font-size: 30px;"></ion-icon>
@@ -43,7 +45,12 @@
       </ion-reorder-group>
     </ion-list>
 
-    <ion-button color="primary" (click)="saveOrder()">Guardar Orden</ion-button>
+    <div class="ion-text-center" style="padding-bottom: 5%;">
+      <ion-button (click)="saveOrder()" shape="round">
+        Guardar
+        <ion-icon slot="end" name="save-outline"></ion-icon>
+           </ion-button>
+    </div>
 
   </ion-card>
 
@@ -54,7 +61,7 @@
     <ion-card-content>
       <ion-list>
         <ion-item *ngFor="let topico of topicosCompartidosConmigo">
-          <ion-label  [style.color]="topico.color">{{topico.id}} - {{topico.name}}</ion-label>
+          <ion-label [style.color]="topico.color">{{topico.id}} - {{topico.name}}</ion-label>
           <ion-buttons slot="end">
             <!-- Visualizar -->
             <ion-button [routerLink]="'/topic-details/' + topico.id">

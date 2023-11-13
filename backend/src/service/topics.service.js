@@ -9,7 +9,7 @@ const listar = async function (textoBuscar) {
       FROM topics
       WHERE 1=1
         AND UPPER(name) LIKE UPPER('%${textoBuscar}%')
-      ORDER BY "order"`);
+      ORDER BY order_index ASC`);
     if (topics && topics[0]) {
       return topics[0];
     } else {
@@ -171,13 +171,20 @@ const listarSharedMeService = async function (userId) {
   }
 };
 
-const actualizarOrden = async function (topicos) {
+const actualizarOrden = async function (orderData) {
+  const transaction = await sequelize.transaction();
   try {
-    for (const topico of topicos) {
-      await TopicsModel.update({ order: topico.order }, { where: { id: topico.id } });
+    console.log("qweeeqwe", orderData);
+    for (const item of orderData) {
+      await TopicsModel.update({ order_index: item.order_index }, {
+        where: { id: item.id },
+        transaction
+      });
     }
+    await transaction.commit();
   } catch (error) {
-    throw new Error("Error al actualizar el orden en la base de datos");
+    await transaction.rollback();
+    throw error;
   }
 };
 

@@ -188,11 +188,15 @@ const listarSharedMeController = async function (req, res) {
 
 const actualizarOrden = async function (req, res) {
   try {
-    const topicos = req.body;
-    await topicsService.actualizarOrden(topicos);
-    res.json({ success: true, message: 'Orden actualizado correctamente.' });
+    await topicsService.actualizarOrden(req.body);
+    res.json({
+      success: true,
+    });
   } catch (error) {
-    res.json({ success: false, error: error.message });
+    res.json({
+      success: false,
+      error: error.message,
+    });
   }
 };
 

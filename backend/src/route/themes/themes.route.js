@@ -15,4 +15,9 @@ module.exports = function (app) {
     authMiddleware.auth,
     themesController.eliminar
   );
+  app.post("/themes/update-order",
+    authMiddleware.auth,
+    themesController.actualizarOrden
+  );
+
 };
