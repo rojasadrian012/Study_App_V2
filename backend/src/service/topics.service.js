@@ -155,9 +155,10 @@ const listarSharedMeService = async function (userId) {
   console.log("listar topicos");
   try {
     const topics = await sequelize.query(`
-      SELECT Distinct t.*
+      SELECT Distinct t.*, u.name as shared_by_user_name, u.last_name as shared_by_user_last_name
       FROM shared_topics st
       INNER JOIN topics t ON st.topic_id = t.id
+      INNER JOIN users u ON u.id = st.user_shared_id
       WHERE st.user_destination_id = :userId
       ORDER BY t.id`, {
       replacements: { userId: userId },
@@ -170,6 +171,7 @@ const listarSharedMeService = async function (userId) {
     throw error;
   }
 };
+
 
 const actualizarOrden = async function (orderData) {
   const transaction = await sequelize.transaction();

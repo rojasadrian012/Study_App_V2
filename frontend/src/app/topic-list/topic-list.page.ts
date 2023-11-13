@@ -73,8 +73,6 @@ export class TopicListPage implements OnInit {
       .then((result) => {
         if (result.data.success == true) {
           this.topicos = result.data.topicos;
-          console.log(this.topicos);
-
         } else {
           console.log(result.data.error);
         }
