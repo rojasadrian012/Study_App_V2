@@ -49,9 +49,61 @@
 
         <!-- Boton para agregar propiedad -->
         <div class="ion-padding" slot="content">
-          <ion-icon slot="end" size="large" name="add-circle"></ion-icon>
+          <ion-button fill="outline" (click)="guardarTema(tema)">Propiedad<ion-icon slot="end"
+              name="add-outline"></ion-icon>
+          </ion-button>
+
         </div>
       </ion-accordion>
     </ion-accordion-group>
   </ion-card>
 </ion-content>
+
+
+<ion-modal [isOpen]="isOpenModal">
+  <ng-template>
+    <ion-card>
+      <ion-card-header>
+        <div class="header-content">
+          <span class="comment-author">{{ temaSelecionado.name }}</span>
+        </div>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ temaSelecionado.description }}</p>
+        <p>{{ temaSelecionado.keywords }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-label class="comment-author" position="floating">Escriba la propiedad:</ion-label>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item>
+          <ion-input label="Descripción:" label-placement="stacked" placeholder="Ingrese la descripción"
+            [(ngModel)]="descripcion"></ion-input>
+        </ion-item>
+
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <div class="icon-row">
+          <ion-button (click)="cerrarAbrirModal()">
+            <ion-icon name="close-outline"></ion-icon>
+            Cerrar
+          </ion-button>
+          <ion-button style="margin-left: 5px;" (click)="guardarPropiedad()">
+            <ion-icon name="checkmark-outline"></ion-icon>
+            Ok
+          </ion-button>
+        </div>
+      </ion-card-header>
+    </ion-card>
+
+  </ng-template>
+
+
+</ion-modal>

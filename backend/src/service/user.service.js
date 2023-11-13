@@ -53,6 +53,7 @@ const actualizar = async function (
   //const id = req.body.id;
   const data = { id, name, last_name, avatar, email, password, deleted };
 
+  console.log("kajhn",data);
   try {
     let userExist = null;
     if (id) {

@@ -13,11 +13,14 @@ export class HomePage implements OnInit {
   private data = inject(DataService);
   temas: any = [];
   temas_propiedades: any = [];
+  isOpenModal: boolean = false;
+  descripcion: string = ''
+  temaSelecionado: any;
 
   constructor(
     private toastController: ToastController,
     private router: Router
-  ) {}
+  ) { }
 
   refresh(ev: any) {
     setTimeout(() => {
@@ -67,7 +70,7 @@ export class HomePage implements OnInit {
       });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   getThemes() {
     let token = localStorage.getItem('token');
@@ -81,8 +84,7 @@ export class HomePage implements OnInit {
       .then((result) => {
         if (result.data.success == true) {
           this.temas = result.data.temas;
-          console.log(this.temas);
-          
+
         } else {
           console.log(result.data.error);
           this.presentToast(result.data.error);
@@ -124,5 +126,46 @@ export class HomePage implements OnInit {
       position: 'bottom',
     });
     await toast.present();
+  }
+
+  cerrarAbrirModal() {
+    this.isOpenModal = !this.isOpenModal
+  }
+
+  guardarTema(tema: any) {
+    this.cerrarAbrirModal()
+    this.temaSelecionado = tema
+  }
+
+  guardarPropiedad() {
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    const data = {
+      theme_id: this.temaSelecionado.id,
+      property_name: this.descripcion,
+      property_value: "1010"
+    }
+
+
+    axios
+      .post('http://localhost:3000/themes_properties/add', data, config)
+      .then(async (result) => {
+        if (result.data.success == true) {
+          this.presentToast('Guardado');
+          this.getThemes()
+          this.getThemesProperties()
+          this.cerrarAbrirModal()
+        } else {
+          this.presentToast(result.data.error);
+        }
+      })
+      .catch(async (error) => {
+        this.presentToast(error.message);
+      });
   }
 }

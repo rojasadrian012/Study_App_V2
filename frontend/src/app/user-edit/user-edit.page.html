@@ -45,7 +45,14 @@
                 [(ngModel)]="usuario.email"
               ></ion-input>
             </ion-item>
-            <!-- <ion-item>{{ usuario.password }}</ion-item>-->
+            <ion-item>
+              <ion-input
+                label="Contraseña:"
+                labelPlacement="stacked"
+                placeholder="Ingrese el Contraseña"
+                [(ngModel)]="usuario.password"
+              ></ion-input>
+            </ion-item>
           </ion-list>
         </h2>
       </ion-label>

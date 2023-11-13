@@ -11,7 +11,7 @@ const listar = async function (textoBuscar) {
       ORDER BY id`);
     if (themes_properties && themes_properties[0]) {
       return themes_properties[0];
-    } else { 
+    } else {
       return [];
     }
   } catch (error) {
@@ -99,10 +99,30 @@ const eliminar = async function (codigo) {
   }
 };
 
+
+const agregarService = async function (data) {
+  try {
+    const newThemeProperty = await ThemesPropertiesModel.create({
+      theme_id: data.theme_id,
+      property_name: data.property_name,
+      property_value: data.property_value
+    });
+
+    return newThemeProperty; // Devuelve la instancia creada
+  } catch (error) {
+    console.error("Error al insertar en la base de datos:", error);
+    throw new Error("Error al insertar en la base de datos");
+  }
+};
+
+
+
+
 module.exports = {
   listar,
   busquedaPorCodigo: consultarPorCodigo,
   actualizar,
   eliminar,
   consultarPorCodigoTheme,
+  agregarService
 };

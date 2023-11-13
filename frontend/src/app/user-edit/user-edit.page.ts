@@ -21,7 +21,7 @@ export class UserEditPage implements OnInit {
   constructor(
     private toastController: ToastController,
     private router: Router
-  ) {}
+  ) { }
 
   ionViewWillEnter(): void {
     //verificar si el usuario no esta logueado
@@ -76,12 +76,14 @@ export class UserEditPage implements OnInit {
       },
     };
     console.log('usuario: ', this.usuario);
-    var data = {
+    const data = {
       id: this.usuario.id,
       name: this.usuario.name,
       last_name: this.usuario.last_name,
       email: this.usuario.email,
+      password: this.usuario.password
     };
+
     axios
       .post('http://localhost:3000/users/update', data, config)
       .then(async (result) => {

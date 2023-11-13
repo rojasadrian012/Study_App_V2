@@ -119,10 +119,31 @@ const eliminar = async function (req, res) {
   }
 };
 
+const agregar = async function (req, res) {
+  console.log("actualizar propiedad de tema controller");
+  let themesPropertiesReturn = null;
+  try {
+    const themeData = req.body; // Obtener los datos del cuerpo de la solicitud
+    themesPropertiesReturn = await themesPropertiesService.agregarService(themeData); // Pasar los datos al servicio
+    res.json({
+      success: true,
+      themes_properties: themesPropertiesReturn,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+
 module.exports = {
   listar,
   busquedaPorCodigo: consultarPorCodigo,
   actualizar,
   eliminar,
-  consultarPorCodigoTheme
+  consultarPorCodigoTheme,
+  agregar
 };
