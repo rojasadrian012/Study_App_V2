@@ -73,7 +73,8 @@ export class TopicListPage implements OnInit {
       .then((result) => {
         if (result.data.success == true) {
           this.topicos = result.data.topicos;
-
+          console.log(this.topicos);
+          
         } else {
           console.log(result.data.error);
         }
@@ -124,7 +125,23 @@ export class TopicListPage implements OnInit {
     const moverItem = this.topicos.splice(event.detail.from, 1)[0];
     this.topicos.splice(event.detail.to, 0, moverItem);
     event.detail.complete();
+
   }
+
+  updateOrderInBackend() {
+    // Aquí, envía los tópicos con el nuevo orden al backend
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    axios.post('http://localhost:3000/topics/updateOrder', this.topicos, config)
+      .then(response => console.log(response))
+      .catch(error => console.error(error));
+  }
+
 
   sortAZ() {
     this.topicos.sort((a: any, b: any) => {
@@ -187,4 +204,9 @@ export class TopicListPage implements OnInit {
         console.log(error.message);
       });
   }
+
+  saveOrder() {
+    this.updateOrderInBackend();
+  }
+  
 }

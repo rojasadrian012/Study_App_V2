@@ -9,7 +9,7 @@ const listar = async function (textoBuscar) {
       FROM topics
       WHERE 1=1
         AND UPPER(name) LIKE UPPER('%${textoBuscar}%')
-      ORDER BY id`);
+      ORDER BY "order"`);
     if (topics && topics[0]) {
       return topics[0];
     } else {
@@ -155,19 +155,29 @@ const listarSharedMeService = async function (userId) {
   console.log("listar topicos");
   try {
     const topics = await sequelize.query(`
-      SELECT t.*
+      SELECT Distinct t.*
       FROM shared_topics st
       INNER JOIN topics t ON st.topic_id = t.id
       WHERE st.user_destination_id = :userId
       ORDER BY t.id`, {
-        replacements: { userId: userId },
-        type: sequelize.QueryTypes.SELECT
-      });
+      replacements: { userId: userId },
+      type: sequelize.QueryTypes.SELECT
+    });
 
     return topics;
   } catch (error) {
     console.log(error);
     throw error;
+  }
+};
+
+const actualizarOrden = async function (topicos) {
+  try {
+    for (const topico of topicos) {
+      await TopicsModel.update({ order: topico.order }, { where: { id: topico.id } });
+    }
+  } catch (error) {
+    throw new Error("Error al actualizar el orden en la base de datos");
   }
 };
 
@@ -181,4 +191,6 @@ module.exports = {
   comentarTopicoService,
   compartirUsuariosService,
   listarSharedMeService,
+  actualizarOrden,
+
 };
