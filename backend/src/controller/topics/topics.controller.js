@@ -200,6 +200,36 @@ const actualizarOrden = async function (req, res) {
   }
 };
 
+const eliminarComentario = async function (req, res) {
+  console.log("eliminar comentario controller");
+  try {
+    await topicsService.eliminarComentario(req.params.filtro || "");
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+const eliminarTopicoComparidoConmigo = async function (req, res) {
+  console.log("p;lkasj", req.params.filtro);
+  try {
+    await topicsService.eliminarTopicoComparidoConmigo(req.params.filtro || "");
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
 
 module.exports = {
   listar,
@@ -211,5 +241,6 @@ module.exports = {
   compartirUsuariosController,
   listarSharedMeController,
   actualizarOrden,
-
+  eliminarComentario,
+  eliminarTopicoComparidoConmigo,
 };

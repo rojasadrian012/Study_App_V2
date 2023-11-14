@@ -51,5 +51,15 @@ module.exports = function (app) {
     authMiddleware.auth,
     topicsController.actualizarOrden
   );
+  app.delete(
+    "/topics/comenterio-delete/:filtro",
+    authMiddleware.auth,
+    topicsController.eliminarComentario
+  );
+  app.delete(
+    "/topics/shared-me-delete/:filtro",
+    authMiddleware.auth,
+    topicsController.eliminarTopicoComparidoConmigo
+  );
 
 };

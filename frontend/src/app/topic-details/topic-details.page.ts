@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonSelect, Platform, ToastController } from '@ionic/angular';
+import { AlertController, IonSelect, Platform, ToastController } from '@ionic/angular';
 import axios from 'axios';
 
 @Component({
@@ -17,6 +17,7 @@ export class TopicDetailsPage implements OnInit {
   isModal: boolean = false;
   newComentario: string = ""
   private platform = inject(Platform);
+  idUsuarioActual: number = 0
 
   usuarios: any = [];
   usuariosSeleccionados: number[] = [];
@@ -29,6 +30,7 @@ export class TopicDetailsPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastController: ToastController,
+    private alertController: AlertController,
   ) { }
 
   ionViewWillEnter(): void {
@@ -90,6 +92,8 @@ export class TopicDetailsPage implements OnInit {
       .then((result) => {
         if (result.data.success == true) {
           this.topicoComentarios = result.data.topicos;
+          const valor = localStorage.getItem('user_id');
+          this.idUsuarioActual = valor !== null ? Number(valor) : 0; // O algún valor por defecto en lugar de 0
 
           if (this.topicoComentarios.length == 0) {
             this.Comentarios = "Sin Comentarios"
@@ -193,7 +197,21 @@ export class TopicDetailsPage implements OnInit {
     this.mostrarSelectUsuarios = !this.mostrarSelectUsuarios
   }
 
-  grabarCompartir() {
+  async grabarCompartir() {
+    if (this.usuariosSeleccionados.length == 0) {
+      const alert = await this.alertController.create({
+        header: 'Mensaje',
+        message: 'Debe selecionar al menos un usuario para compartir.',
+        buttons: [
+          {
+            text: 'OK'
+          },
+        ],
+      });
+      await alert.present();
+      return
+    }
+
     this.abrirCerrarModalCompartir()
     const user_id = localStorage.getItem('user_id');
     const datosShareTopics = {
@@ -233,5 +251,48 @@ export class TopicDetailsPage implements OnInit {
     await toast.present();
   }
 
+  deleteComentario(id: any, idTopico: string) {
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    axios
+      .delete('http://localhost:3000/topics/comenterio-delete/' + id, config)
+      .then((result) => {
+        if (result.data.success == true) {
+          this.presentToast('Comentario Eliminado');
+          this.getTopicsComments(idTopico);
+        } else {
+          this.presentToast(result.data.error);
+        }
+      })
+      .catch((error) => {
+        this.presentToast(error.message);
+      });
+  }
+
+  async confirmDelete(id: string, idTopico: string) {
+    const alert = await this.alertController.create({
+      header: 'Mensaje',
+      message: 'Desea eliminar el comentario?',
+      buttons: [
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.deleteComentario(id, idTopico);
+          },
+        },
+        {
+          text: 'Cancelar',
+          handler: () => {
+            console.log('Cancelado');
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
 
 }

@@ -155,7 +155,7 @@ const listarSharedMeService = async function (userId) {
   console.log("listar topicos");
   try {
     const topics = await sequelize.query(`
-      SELECT Distinct t.*, u.name as shared_by_user_name, u.last_name as shared_by_user_last_name
+      SELECT Distinct t.*,st.id as id_shared_topics, u.name as shared_by_user_name, u.last_name as shared_by_user_last_name
       FROM shared_topics st
       INNER JOIN topics t ON st.topic_id = t.id
       INNER JOIN users u ON u.id = st.user_shared_id
@@ -190,6 +190,37 @@ const actualizarOrden = async function (orderData) {
   }
 };
 
+const eliminarComentario = async function (codigo) {
+  console.log("eliminar comentario");
+  try {
+    await sequelize.query(`
+      DELETE FROM comments
+      WHERE id = :codigo
+    `, {
+      replacements: { codigo: codigo },
+      type: sequelize.QueryTypes.DELETE
+    });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const eliminarTopicoComparidoConmigo = async function (codigo) {
+  console.log("kasjhasd");
+  try {
+    await sequelize.query(`
+      DELETE FROM shared_topics
+      WHERE id = :codigo
+    `, {
+      replacements: { codigo: codigo },
+      type: sequelize.QueryTypes.DELETE
+    });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 
 module.exports = {
   listar,
@@ -201,5 +232,6 @@ module.exports = {
   compartirUsuariosService,
   listarSharedMeService,
   actualizarOrden,
-
+  eliminarComentario,
+  eliminarTopicoComparidoConmigo,
 };

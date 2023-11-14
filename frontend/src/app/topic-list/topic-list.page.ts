@@ -207,4 +207,50 @@ export class TopicListPage implements OnInit {
       });
   }
 
+
+  async confirmDeleteUsuario(topico: any) {
+    const alert = await this.alertController.create({
+      header: 'Mensaje',
+      message: `Desea eliminar el Topico que ${topico.shared_by_user_name} ${topico.shared_by_user_last_name} compartio contigo?`,
+      buttons: [
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.deleteShareMeTopics(topico.id_shared_topics);
+          },
+        },
+        {
+          text: 'Cancelar',
+          handler: () => {
+            console.log('Cancelado');
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  deleteShareMeTopics(id: number) {
+
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    axios
+      .delete('http://localhost:3000/topics/shared-me-delete/' + id, config)
+      .then((result) => {
+        if (result.data.success == true) {
+          this.getTopicsShareMe()
+          this.presentToast('Eliminado...');
+        } else {
+          this.presentToast(result.data.error);
+        }
+      })
+      .catch((error) => {
+        this.presentToast(error.message);
+      });
+  }
+
 }
