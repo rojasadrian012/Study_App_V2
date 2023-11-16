@@ -121,14 +121,14 @@ const sendEmail = async (destinoEmail, subject, text) => {
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'w0973898419@gmail.com',
-      pass: 'vzdu xyps uded cafz'
+      user: 'correo aqui del remitente',
+      pass: 'clave aqui, tutorial: https://www.youtube.com/watch?v=u3YIHs1Rx78'
     }
   });
 
 
   let mailOptions = {
-    from: 'w0973898419@gmail.com',
+    from: 'correo aqui del remitente',
     to: destinoEmail,
     subject: subject,
     text: text
