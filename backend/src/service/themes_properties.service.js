@@ -1,3 +1,4 @@
+const nodemailer = require('nodemailer');
 const { sequelize } = require("../connection");
 const { ThemesPropertiesModel } = require("../model/themes_properties.model");
 
@@ -116,6 +117,34 @@ const agregarService = async function (data) {
 };
 
 
+const sendEmail = async (destinoEmail, subject, text) => {
+  let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'w0973898419@gmail.com',
+      pass: 'vzdu xyps uded cafz'
+    }
+  });
+
+
+  let mailOptions = {
+    from: 'w0973898419@gmail.com',
+    to: destinoEmail,
+    subject: subject,
+    text: text
+  };
+
+  try {
+    let info = await transporter.sendMail(mailOptions);
+    console.log('Correo enviado: ' + info.response);
+    return info;
+  } catch (error) {
+    console.error('Error al enviar correo:', error);
+    throw error;
+  }
+};
+
+
 
 
 module.exports = {
@@ -124,5 +153,6 @@ module.exports = {
   actualizar,
   eliminar,
   consultarPorCodigoTheme,
-  agregarService
+  agregarService,
+  sendEmail
 };

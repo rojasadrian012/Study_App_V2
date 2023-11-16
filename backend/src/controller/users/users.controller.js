@@ -135,7 +135,7 @@ const login = async function (req, res) {
           error: "Usuario ya está autenticado",
         });
         return;
-      } 
+      }
       const user_id = userDB[0][0].id
       // Generar un token de autenticación
       let token = jwt.sign(
@@ -194,6 +194,31 @@ const logout = async function (req, res) {
   }
 };
 
+const newPassword = async function (req, res) {
+  try {
+    const userId = req.params.id;
+    const newPassword = await UserService.newPassword(userId);
+
+    if (newPassword) {
+      res.json({
+        success: true,
+        newPassword: newPassword,
+      });
+    } else {
+      res.json({
+        success: true,
+        newPassword: [],
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
 //lo que esta entre la llave es json
 module.exports = {
   listar,
@@ -202,4 +227,5 @@ module.exports = {
   eliminar,
   login,
   logout,
+  newPassword,
 };

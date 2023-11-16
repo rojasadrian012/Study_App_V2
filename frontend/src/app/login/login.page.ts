@@ -16,6 +16,9 @@ export class LoginPage implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private platform = inject(Platform);
   usuario: any = '';
+  isModal: boolean = false
+  emailRecuperacion: string = ''
+  usuarios: any = []
 
   constructor(
     private toastController: ToastController,
@@ -57,7 +60,7 @@ export class LoginPage implements OnInit {
     };
     axios
       .post('http://localhost:3000/user/login', data)
-      .then(async (result) => {        
+      .then(async (result) => {
         if (result.data.success == true) {
           this.presentToast('Bienvenido a StudyApp');
           localStorage.setItem('token', result.data.token);
@@ -87,4 +90,98 @@ export class LoginPage implements OnInit {
     });
     await toast.present();
   }
+
+  showRecoverPasswordModal() {
+    this.isModal = !this.isModal;
+  }
+
+  getUsers() {
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    axios
+      .get('http://localhost:3000/users/list', config)
+      .then((result) => {
+        if (result.data.success == true) {
+          this.usuarios = result.data.usuarios;
+          const usuario = this.verificarCorreo()
+
+          if (usuario)
+            this.crearNuevaPassword(usuario.id)
+          else
+            this.presentToast("No existe el usuario");
+
+        } else {
+          console.log(result.data.error);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
+
+  verificarCorreo() {
+    return this.usuarios.find((usuario: any) => usuario.email === this.emailRecuperacion);
+  }
+
+
+
+  enviarEmail(newPassword: string) {
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+
+    const dataSend = {
+      destinoEmail: this.emailRecuperacion,
+      subject: 'STUDYAPP - Recuperar Coontraseña',
+      text: `Su nueva contraseña es: ${newPassword}`
+    }
+    axios.post('http://localhost:3000/themes_properties/enviaremail', dataSend, config)
+      .then((result) => {
+        if (result.data.success) {
+          this.presentToast('Email enviado!');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.presentToast('Error: ' + error.message);
+      });
+  }
+
+  crearNuevaPassword(id: number) {
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    axios
+      .get('http://localhost:3000/users/new-password/' + id, config)
+      .then((result) => {
+        if (result.data.success == true) {
+          this.enviarEmail(result.data.newPassword)
+
+        } else {
+          console.log(result.data.error);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
+
+  recuperarPassword() {
+    this.getUsers()
+  }
+
+
+
+
 }

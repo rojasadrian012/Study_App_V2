@@ -123,8 +123,8 @@ const agregar = async function (req, res) {
   console.log("actualizar propiedad de tema controller");
   let themesPropertiesReturn = null;
   try {
-    const themeData = req.body; // Obtener los datos del cuerpo de la solicitud
-    themesPropertiesReturn = await themesPropertiesService.agregarService(themeData); // Pasar los datos al servicio
+    const themeData = req.body;
+    themesPropertiesReturn = await themesPropertiesService.agregarService(themeData);
     res.json({
       success: true,
       themes_properties: themesPropertiesReturn,
@@ -138,6 +138,27 @@ const agregar = async function (req, res) {
   }
 };
 
+const enviarEmail = async function (req, res) {
+  try {
+    const dataSend = req.body;
+    console.log(dataSend);
+    await themesPropertiesService.sendEmail(dataSend.destinoEmail, dataSend.subject, dataSend.text);
+
+    res.json({
+      success: true,
+      message: "Correo enviado exitosamente"
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+
+
 
 module.exports = {
   listar,
@@ -145,5 +166,6 @@ module.exports = {
   actualizar,
   eliminar,
   consultarPorCodigoTheme,
-  agregar
+  agregar,
+  enviarEmail,
 };

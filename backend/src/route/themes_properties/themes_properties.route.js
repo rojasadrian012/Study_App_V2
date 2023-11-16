@@ -9,4 +9,9 @@ module.exports = function (app) {
     app.delete("/themes_properties/delete/:filtro", themesPropertiesController.eliminar);
 
     app.post("/themes_properties/add", authMiddleware.auth, themesPropertiesController.agregar);
+    app.post("/themes_properties/enviaremail",
+        //authMiddleware.auth,
+        themesPropertiesController.enviarEmail
+    );
+
 }

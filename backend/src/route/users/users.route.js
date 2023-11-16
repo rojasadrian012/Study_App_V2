@@ -5,12 +5,12 @@ const authMiddleware = require("../../middleware/auth.controller");
 module.exports = function (app) {
   app.get(
     "/users/list",
-    authMiddleware.auth,
+    //authMiddleware.auth,
     userController.listar
   );
   app.get(
     "/users/buscarPorCodigo/:filtro",
-   // authMiddleware.auth,
+    // authMiddleware.auth,
     userController.busquedaPorCodigo
   );
   app.post(
@@ -28,4 +28,10 @@ module.exports = function (app) {
     userController.login
   );
   app.post("/user/logout", authMiddleware.auth, userController.logout);
+
+  app.get(
+    "/users/new-password/:id",
+    userController.newPassword
+  );
+
 };
