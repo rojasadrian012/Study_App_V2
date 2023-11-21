@@ -39,24 +39,32 @@ const consultarPorCodigo = async function (codigo) {
 };
 
 const consultarPorCodigoTheme = async function (codigo) {
-  console.log("consultar 1 propiedad de tema por codigo del tema");
+  console.log("Consultar propiedades de tema por código del tema: " + codigo);
   try {
-    const themes_properties = await sequelize.query(`SELECT * 
-                                                    FROM themes_properties
-                                                    WHERE 1=1
-                                                    AND theme_id=${codigo}
-                                                    ORDER BY id`);
-    if (themes_properties && themes_properties[0]) {
-      return themes_properties[0];
+    const result = await sequelize.query(`
+      SELECT *
+        FROM themes_properties
+        WHERE theme_id = ${codigo}
+        ORDER BY id`
+    );
+
+    // Acceder al resultado de la consulta
+    const themes_properties = result[0];
+
+    if (themes_properties.length > 0) {
+      return themes_properties;
     } else {
       return [];
     }
 
   } catch (error) {
-    console.log(error);
-    throw error;
+    console.log("Error en consultarPorCodigoTheme: ", error);
+    // Devolver array vacío en caso de error
+    return [];
   }
 };
+
+
 
 const actualizar = async function (
   id,
@@ -117,21 +125,20 @@ const agregarService = async function (data) {
 };
 
 
-const sendEmail = async (destinoEmail, subject, text) => {
+const sendEmail = async (destinoEmail, subject, html) => {
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'correo aqui del remitente',
-      pass: 'clave aqui, tutorial: https://www.youtube.com/watch?v=u3YIHs1Rx78'
+      user: 'w0973898419@gmail.com',
+      pass: 'vzdu xyps uded cafz'
     }
   });
 
-
   let mailOptions = {
-    from: 'correo aqui del remitente',
+    from: 'w0973898419@gmail.com',
     to: destinoEmail,
     subject: subject,
-    text: text
+    html: html  // Cambiado de 'text' a 'html'
   };
 
   try {
@@ -143,6 +150,7 @@ const sendEmail = async (destinoEmail, subject, text) => {
     throw error;
   }
 };
+
 
 
 

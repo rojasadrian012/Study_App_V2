@@ -32,6 +32,11 @@
         +
         tema.id"></ion-icon>
 
+          <!-- Visualizar -->
+          <ion-button (click)="cambiarPantalla(tema.id)">
+            <ion-icon slot="icon-only" name="eye-outline" style="font-size: 30px;"></ion-icon>
+          </ion-button>
+
           <!-- ELIMINAR TEMA-->
           <ion-icon (click)="confirmDelete(tema.id)" style=" font-size: 30px;" slot="end" name="trash"> </ion-icon>
           <ion-reorder slot="end"></ion-reorder>

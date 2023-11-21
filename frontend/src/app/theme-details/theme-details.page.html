@@ -1,0 +1,68 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="getBackButtonText()" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title> Themes</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card *ngIf="themesProperties">
+    <ion-card-header>
+      Propiedades del Tema
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let themesProperty of themesProperties">
+          <span>{{ themesProperty.property_name }} - {{ themesProperty.property_value }}</span>
+          <ion-button color="danger" style="margin-left: auto;" (click)="eliminarProperty(themesProperty.id, themesProperty.theme_id)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- boton para agregar -->
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" style="margin-bottom: 30px;">
+     <ion-fab-button (click)="abrirCerrarModal()"> <!--abrimos el modal -->
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
+<ion-modal [isOpen]="isOpen">
+  <ng-template>
+    <ion-content >
+      <ion-card>
+        <ion-card-header>
+          <ion-label position="floating">Ingresa las propiedades del nuevo tema</ion-label>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-textarea [(ngModel)]="newThemeProperty.property_name" placeholder="Escribe el nombre"></ion-textarea>
+          <ion-input type="number" [(ngModel)]="newThemeProperty.property_value" placeholder="Escribe el valor"></ion-input>
+        </ion-card-content>       
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          <div style="display: flex; justify-content: center; align-items: center;"> <!--centrar botones -->
+            <ion-button (click)="abrirCerrarModal()"> <!--cerramos el modal -->
+              <ion-icon name="close-outline"></ion-icon>
+              Cerrar
+            </ion-button>
+            <ion-button style="margin-left: 5px;" (click)="guardarThemeProperty()">
+              <ion-icon name="save-outline"></ion-icon>
+              Guardar
+            </ion-button>
+          </div>
+        </ion-card-header>
+      </ion-card>
+
+    </ion-content>
+  </ng-template>
+</ion-modal>

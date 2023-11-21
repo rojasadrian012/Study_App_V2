@@ -59,7 +59,7 @@ const consultarPorCodigoTheme = async function (req, res) {
   console.log("consultar 1 propiedad de tema por codigo del tema controller");
   try {
     const themesPropertiesModelResult =
-      await themesPropertiesService.consultarPorCodigoTheme(req.params.filtro || "");
+      await themesPropertiesService.consultarPorCodigoTheme(req.params.filtro || ""); //aqui se captura el id de la ruta y se llama al service
     if (themesPropertiesModelResult) {
       res.json({
         success: true,
@@ -142,7 +142,7 @@ const enviarEmail = async function (req, res) {
   try {
     const dataSend = req.body;
     console.log(dataSend);
-    await themesPropertiesService.sendEmail(dataSend.destinoEmail, dataSend.subject, dataSend.text);
+    await themesPropertiesService.sendEmail(dataSend.destinoEmail, dataSend.subject, dataSend.html);
 
     res.json({
       success: true,

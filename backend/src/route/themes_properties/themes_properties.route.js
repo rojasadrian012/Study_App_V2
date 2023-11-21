@@ -4,13 +4,12 @@ const authMiddleware = require("../../middleware/auth.controller");
 module.exports = function (app) {
     app.get("/themes_properties/list", themesPropertiesController.listar);
     app.get("/themes_properties/buscarPorCodigo/:filtro", themesPropertiesController.busquedaPorCodigo);
-    app.get("/themes_properties/buscarPorTema/:filtro", themesPropertiesController.consultarPorCodigoTheme);
-    app.post("/themes_properties/update", themesPropertiesController.actualizar);
-    app.delete("/themes_properties/delete/:filtro", themesPropertiesController.eliminar);
+    app.get("/themes_properties/buscarPorTema/:filtro", authMiddleware.auth, themesPropertiesController.consultarPorCodigoTheme);
+    app.post("/themes_properties/update", authMiddleware.auth, themesPropertiesController.actualizar);
+    app.delete("/themes_properties/delete/:filtro", authMiddleware.auth, themesPropertiesController.eliminar);
 
     app.post("/themes_properties/add", authMiddleware.auth, themesPropertiesController.agregar);
     app.post("/themes_properties/enviaremail",
-        //authMiddleware.auth,
         themesPropertiesController.enviarEmail
     );
 

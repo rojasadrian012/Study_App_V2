@@ -173,4 +173,8 @@ export class ThemeListPage implements OnInit {
   sortIdDesc() {
     this.temas.sort((a: any, b: any) => b.id - a.id);
   }
+
+  cambiarPantalla(id: any) {
+    this.router.navigate(['/theme-details/' + id])
+  }
 }

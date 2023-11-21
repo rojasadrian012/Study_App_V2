@@ -129,7 +129,7 @@ export class LoginPage implements OnInit {
 
 
 
-  enviarEmail(newPassword: string) {
+  enviarEmail(newPassword: any) {
     let token = localStorage.getItem('token');
     let config = {
       headers: {
@@ -137,12 +137,73 @@ export class LoginPage implements OnInit {
       },
     };
 
-
     const dataSend = {
       destinoEmail: this.emailRecuperacion,
-      subject: 'STUDYAPP - Recuperar Coontraseña',
-      text: `Su nueva contraseña es: ${newPassword}`
-    }
+      subject: 'Recuperación de Contraseña para StudyAPP',
+      html: `
+      <html>
+      <head>
+        <style>
+          body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+          }
+          .header, .footer {
+            background-color: #f3f3f3;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+          }
+          .content {
+            padding: 20px;
+          }
+          .content-block {
+            background-color: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            margin: 15px 0;
+            padding: 10px;
+            font-size: 16px;
+          }
+          .important {
+            color: black;
+            font-weight: bold;
+          }
+          .important_V2 {
+            color: #ff5252;
+            font-weight: bold;
+          }
+          .footer {
+            font-size: 12px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1 style="margin:0;">StudyAPP</h1>
+        </div>
+        <div class="content">
+          <div class="content-block">
+            <p style="color: black">Estimado usuario <strong>${newPassword.name} ${newPassword.lastName}</strong> de <strong>StudyAPP</strong>.</p>
+            <p style="color: black">Hemos recibido una solicitud para restablecer su contraseña. A continuación, le proporcionamos su nueva contraseña temporal:</p>
+            <p class="important">Nueva Contraseña: <span class="important_V2">${newPassword.newPassword}</span></p>
+            <p style="color: black">Por razones de seguridad, le recomendamos cambiar esta contraseña temporal tan pronto como inicie sesión en su cuenta. Si no realizó esta solicitud o necesita ayuda adicional, póngase en contacto con nuestro equipo de soporte.</p>
+          </div>
+          <div class="content-block">
+            <p>¡Gracias por usar StudyAPP!</p>
+          </div>
+        </div>
+        <div style="color: black" class="footer">
+          Atentamente,<br/>
+          El equipo de StudyAPP.
+        </div>
+      </body>
+      </html>
+      `
+    };
+
     axios.post('http://localhost:3000/themes_properties/enviaremail', dataSend, config)
       .then((result) => {
         if (result.data.success) {
@@ -167,7 +228,6 @@ export class LoginPage implements OnInit {
       .then((result) => {
         if (result.data.success == true) {
           this.enviarEmail(result.data.newPassword)
-
         } else {
           console.log(result.data.error);
         }

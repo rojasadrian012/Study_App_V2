@@ -88,16 +88,41 @@ const newPassword = async function (userId) {
     // Generar una contraseña aleatoria de 6 dígitos
     const randomPassword = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Actualizar la contraseña en la base de datos
-    await sequelize.query(`UPDATE users SET password = '${randomPassword}' WHERE id = ${userId}`);
+    // Iniciar una transacción
+    const transaction = await sequelize.transaction();
 
-    // Retornar la nueva contraseña
-    return randomPassword;
+    try {
+      // Actualizar la contraseña en la base de datos
+      await sequelize.query(`UPDATE users SET password = '${randomPassword}' WHERE id = ${userId}`, { transaction });
+
+      // Obtener el nombre y apellido del usuario
+      const [users] = await sequelize.query(`SELECT name, last_name FROM users WHERE id = ${userId}`, { transaction });
+      
+      // Confirmar la transacción
+      await transaction.commit();
+
+      // Si el usuario no existe, retornar null o manejar como prefieras
+      if (users.length === 0) {
+        return null;
+      }
+
+      // Retornar la nueva contraseña junto con el nombre y apellido
+      return {
+        newPassword: randomPassword,
+        name: users[0].name,
+        lastName: users[0].last_name
+      };
+    } catch (error) {
+      // Si algo sale mal, hacer rollback de la transacción
+      await transaction.rollback();
+      throw error;
+    }
   } catch (error) {
     console.log(error);
     throw error;
   }
 };
+
 
 
 
