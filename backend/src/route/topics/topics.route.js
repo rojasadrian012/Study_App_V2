@@ -61,5 +61,25 @@ module.exports = function (app) {
     authMiddleware.auth,
     topicsController.eliminarTopicoComparidoConmigo
   );
+  app.post(
+    "/topics/like",
+    authMiddleware.auth,
+    topicsController.agregarLike
+  );
+  app.get(
+    "/topics/byLikes",
+    authMiddleware.auth,
+    topicsController.listarTopicsPorLikes
+  );
+  app.get(
+    "/topics/userHasLiked/:userId",
+    authMiddleware.auth,
+    topicsController.usuarioHaDadoLike
+  );
+  app.delete(
+    "/topics/dislike/:filtro",
+    authMiddleware.auth,
+    topicsController.eliminarMegusta
+  );
 
 };

@@ -70,7 +70,7 @@
               <ion-icon slot="icon-only" name="eye-outline" style="font-size: 30px;"></ion-icon>
             </ion-button>
 
-            
+
             <!-- ELIMINAR TOPICO -->
             <ion-button (click)="confirmDeleteUsuario(topico)">
               <ion-icon slot="icon-only" name="trash-outline" style="font-size: 30px;"></ion-icon>
@@ -80,6 +80,32 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+
+  <ion-card>
+    <ion-card-header class="comment-author">
+      Ranking de Topicos
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let topico of topicosPorLikes">
+          <ion-label [style.color]="topico.color">
+            {{topico.name}}
+          </ion-label>
+          <ion-chip outline color="primary" style="margin-left: 10px; font-size: 0.8em;">
+            <ion-icon name="thumbs-up-outline" style="font-size: 20px;"></ion-icon>
+            <ion-label>{{topico.like_count}}</ion-label>
+          </ion-chip>
+          <ion-buttons slot="end">
+            <!-- Visualizar -->
+            <ion-button [routerLink]="'/topic-details/' + topico.id">
+              <ion-icon slot="icon-only" name="eye-outline" style="font-size: 30px;"></ion-icon>
+            </ion-button>          
+          </ion-buttons>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
 
   <!-- AGREGAR TOPICO-->
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">

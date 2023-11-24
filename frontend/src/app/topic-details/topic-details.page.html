@@ -21,6 +21,13 @@
         <ion-button color="transparent" [routerLink]="'/topic-edit/' + topic.id" style="--box-shadow: none;">
           <ion-icon slot="icon-only" name="create-outline" style="font-size: 30px;"></ion-icon>
         </ion-button>
+        <!-- Botón de like -->
+        <ion-button color="transparent" (click)="likeTopic(topic.id)" style="--box-shadow: none;">
+          <ion-icon slot="icon-only" name="heart" style="font-size: 30px;"></ion-icon>
+        </ion-button>
+        <ion-button color="transparent" (click)="dislikeTopic()" style="--box-shadow: none;">
+          <ion-icon slot="icon-only" name="heart-dislike-outline" style="font-size: 30px;"></ion-icon>
+        </ion-button>
 
       </div>
     </ion-card-header>

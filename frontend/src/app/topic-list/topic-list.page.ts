@@ -13,7 +13,9 @@ import axios from 'axios';
 export class TopicListPage implements OnInit {
   topicos: any = [];
   topicosCompartidosConmigo: any = [];
+  topicosPorLikes: any = [];
   textoTopicosCompartidos: string = "Topicos compartidos con el Usuario:"
+  userLiked: boolean = false;
 
   private platform = inject(Platform);
   public alertButtons = ['Aceptar', 'Cancelar'];
@@ -33,7 +35,8 @@ export class TopicListPage implements OnInit {
     }
     this.getTopics();
     this.getTopicsShareMe()
-
+    this.getTopicsByLikes()
+    this.getUserLiked()
   }
 
   ngOnInit() {
@@ -253,4 +256,49 @@ export class TopicListPage implements OnInit {
       });
   }
 
+  getTopicsByLikes() {
+    //const user_id = localStorage.getItem('user_id');
+
+    let token = localStorage.getItem('token');
+    let config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    axios
+      .get('http://localhost:3000/topics/byLikes', config)
+      .then((result) => {
+        if (result.data.success == true) {
+
+          this.topicosPorLikes = result.data.data
+        } else {
+          console.log(result.data.error);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }  
+  getUserLiked() {
+    const user_id = localStorage.getItem('user_id');
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    axios
+      .get('http://localhost:3000/topics/userHasLiked/' + user_id, config)
+      .then((result) => {
+        if (result.data.success == true) {
+          this.userLiked = result.data.success
+
+        } else {
+          console.log(result.data.error);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
 }

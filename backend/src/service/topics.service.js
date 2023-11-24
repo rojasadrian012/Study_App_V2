@@ -222,6 +222,84 @@ const eliminarTopicoComparidoConmigo = async function (codigo) {
   }
 };
 
+const agregarLike = async function (userId, topicId) {
+  try {
+    const result = await sequelize.query(`
+      INSERT INTO public.topic_likes (user_id, topic_id)
+      SELECT :userId, :topicId
+      WHERE NOT EXISTS (
+        SELECT 1 FROM public.topic_likes WHERE user_id = :userId AND topic_id = :topicId
+      )
+      RETURNING id;
+    `, {
+      replacements: { userId: userId, topicId: topicId },
+      type: sequelize.QueryTypes.INSERT
+    });
+
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const listarTopicsPorLikes = async function () {
+  try {
+    const topics = await sequelize.query(`
+    SELECT t.*, COUNT(l.id) as like_count
+      FROM topics t
+      LEFT JOIN topic_likes l ON t.id = l.topic_id
+      GROUP BY t.id
+      HAVING COUNT(l.id) > 0
+      ORDER BY like_count DESC;
+    `, {
+      type: sequelize.QueryTypes.SELECT
+    });
+
+    return topics;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const usuarioHaDadoLike = async function (userId) {//ver este metodo
+  try {
+    const result = await sequelize.query(`
+      SELECT EXISTS(
+        SELECT 1
+        FROM topic_likes
+        WHERE user_id = :userId
+        LIMIT 1
+      ) as hasLiked;
+    `, {
+      replacements: { userId: userId },
+      type: sequelize.QueryTypes.SELECT
+    });
+
+    return result[0].hasLiked;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const eliminarMegusta = async function (codigo) {
+  console.log("eliminar like");
+  try {
+    await sequelize.query(`
+      DELETE FROM topic_likes
+      WHERE user_id = :codigo
+    `, {
+      replacements: { codigo: codigo },
+      type: sequelize.QueryTypes.DELETE
+    });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 module.exports = {
   listar,
   busquedaPorCodigo: consultarPorCodigo,
@@ -234,4 +312,8 @@ module.exports = {
   actualizarOrden,
   eliminarComentario,
   eliminarTopicoComparidoConmigo,
+  agregarLike,
+  listarTopicsPorLikes,
+  usuarioHaDadoLike,
+  eliminarMegusta,
 };

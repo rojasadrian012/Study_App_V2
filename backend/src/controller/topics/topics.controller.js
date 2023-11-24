@@ -230,6 +230,69 @@ const eliminarTopicoComparidoConmigo = async function (req, res) {
   }
 };
 
+const agregarLike = async function (req, res) {
+  try {
+    const { userId, topicId } = req.body;
+    await topicsService.agregarLike(userId, topicId);
+    res.json({
+      success: true
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+const listarTopicsPorLikes = async function (req, res) {
+  try {
+    const topics = await topicsService.listarTopicsPorLikes();
+    res.json({
+      success: true,
+      data: topics
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+const usuarioHaDadoLike = async function (req, res) {
+  try {
+    const userId = req.params.userId;
+    const hasLiked = await topicsService.usuarioHaDadoLike(userId);
+    res.json({
+      success: true,
+      hasLiked: hasLiked
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+const eliminarMegusta = async function (req, res) {
+  console.log("eliminar like controller");
+  try {
+    await topicsService.eliminarMegusta(req.params.filtro || "");
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+
+
 
 module.exports = {
   listar,
@@ -243,4 +306,8 @@ module.exports = {
   actualizarOrden,
   eliminarComentario,
   eliminarTopicoComparidoConmigo,
+  agregarLike,
+  listarTopicsPorLikes,
+  usuarioHaDadoLike,
+  eliminarMegusta
 };

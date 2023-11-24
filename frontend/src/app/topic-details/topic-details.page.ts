@@ -295,4 +295,51 @@ export class TopicDetailsPage implements OnInit {
     await alert.present();
   }
 
+  likeTopic(topicoId: any) {
+    const user_id = localStorage.getItem('user_id');
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+
+    const data = {
+      userId: user_id,
+      topicId: topicoId
+    };
+
+    axios.post('http://localhost:3000/topics/like', data, config)
+      .then((result) => {
+        if (result.data.success) {
+          //aqui se puede mostrar un mensaje.          
+        }
+      })
+      .catch((error) => {
+        this.presentToast('Error al guardar');
+      });
+
+  }
+
+  dislikeTopic() {
+    const user_id = localStorage.getItem('user_id');
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    axios
+      .delete('http://localhost:3000/topics/dislike/' + user_id, config)
+      .then((result) => {
+        if (result.data.success == true) {
+          //mostrar mensaje de dislike
+        } else {
+          this.presentToast(result.data.error);
+        }
+      })
+      .catch((error) => {
+        this.presentToast(error.message);
+      });
+  }
 }
