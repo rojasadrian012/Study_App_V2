@@ -17,18 +17,19 @@
   <ion-card *ngIf="topic">
     <ion-card-header>
       <div class="header-content">
-        <span class="comment-author">{{ topic.name }}</span>
-        <ion-button color="transparent" [routerLink]="'/topic-edit/' + topic.id" style="--box-shadow: none;">
-          <ion-icon slot="icon-only" name="create-outline" style="font-size: 30px;"></ion-icon>
-        </ion-button>
-        <!-- Botón de like -->
-        <ion-button color="transparent" (click)="likeTopic(topic.id)" style="--box-shadow: none;">
-          <ion-icon slot="icon-only" name="heart" style="font-size: 30px;"></ion-icon>
-        </ion-button>
-        <ion-button color="transparent" (click)="dislikeTopic()" style="--box-shadow: none;">
-          <ion-icon slot="icon-only" name="heart-dislike-outline" style="font-size: 30px;"></ion-icon>
-        </ion-button>
-
+        <span class="comment-author-top">{{ topic.name }}</span>
+        <div class="button-group">
+          <ion-button color="transparent" [routerLink]="'/topic-edit/' + topic.id" style="--box-shadow: none;">
+            <ion-icon slot="icon-only" name="create-outline" style="font-size: 30px;"></ion-icon>
+          </ion-button>
+          <!-- Botón de like -->
+          <ion-button color="transparent" (click)="likeTopic(topic.id)" style="--box-shadow: none;">
+            <ion-icon slot="icon-only" name="heart" style="font-size: 30px;"></ion-icon>
+          </ion-button>
+          <ion-button color="transparent" (click)="dislikeTopic()" style="--box-shadow: none;">
+            <ion-icon slot="icon-only" name="heart-dislike-outline" style="font-size: 30px;"></ion-icon>
+          </ion-button>
+        </div>
       </div>
     </ion-card-header>
     <ion-card-content>
@@ -36,7 +37,7 @@
       <p>Fecha de Creación: {{ topic.create_date }}</p>
     </ion-card-content>
   </ion-card>
-
+  
   <ion-card *ngIf="topic">
     <ion-card-header class="comment-author" style="padding-bottom: 0;">{{Comentarios}}</ion-card-header>
     <ion-card-content>

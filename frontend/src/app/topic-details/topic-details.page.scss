@@ -22,12 +22,7 @@
 }
 
 
-.comment-author {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    font-size: 15px;
-}
+
 
 .comment-date {
     font-size: 9px;
@@ -56,11 +51,7 @@ ion-button:last-child {
 
 
 
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+
 
 ion-button {
     padding: 0;
@@ -76,3 +67,19 @@ ion-button {
 }
 
 
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.comment-author-top {
+    font-weight: bold;
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+.button-group {
+    display: flex;
+    align-items: flex-end;
+}
