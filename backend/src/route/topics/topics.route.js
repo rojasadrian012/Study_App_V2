@@ -72,12 +72,12 @@ module.exports = function (app) {
     topicsController.listarTopicsPorLikes
   );
   app.get(
-    "/topics/userHasLiked/:userId",
+    "/topics/userHasLiked/:userId/:topicId",
     authMiddleware.auth,
     topicsController.usuarioHaDadoLike
   );
   app.delete(
-    "/topics/dislike/:filtro",
+    "/topics/dislike/:userId/:topicId",
     authMiddleware.auth,
     topicsController.eliminarMegusta
   );

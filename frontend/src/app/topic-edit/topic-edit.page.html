@@ -16,15 +16,19 @@
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Orden:</ion-label>
-        <ion-input placeholder="Ingrese el orden" [(ngModel)]="topic.order"></ion-input>
+        <ion-input type="number" placeholder="Ingrese el orden" [(ngModel)]="topic.order"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Prioridad:</ion-label>
-        <ion-input placeholder="Ingrese prioridad en numeros" [(ngModel)]="topic.priority"></ion-input>
+        <ion-input type="number" placeholder="Ingrese prioridad en numeros" [(ngModel)]="topic.priority"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Color:</ion-label>
         <input type="color" [(ngModel)]="topic.color" />
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Link del material:</ion-label>
+        <ion-input placeholder="Ingrese el link del material" [(ngModel)]="topic.link"></ion-input>
       </ion-item>
     </ion-list>
   </ion-card>

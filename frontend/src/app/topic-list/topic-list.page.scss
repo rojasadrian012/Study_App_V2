@@ -41,13 +41,32 @@ p {
 
 .icon-row {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
 }
+
+.left-buttons {
+  display: flex;
+}
+
+.right-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
 
 .comment-author {
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
   font-size: 15px;
+}
+
+.scrollable-all-topics {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.scrollable-topics {
+  max-height: 130px;
+  overflow-y: auto;
 }

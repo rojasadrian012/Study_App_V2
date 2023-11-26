@@ -36,7 +36,6 @@ export class TopicListPage implements OnInit {
     this.getTopics();
     this.getTopicsShareMe()
     this.getTopicsByLikes()
-    this.getUserLiked()
   }
 
   ngOnInit() {
@@ -271,28 +270,6 @@ export class TopicListPage implements OnInit {
         if (result.data.success == true) {
 
           this.topicosPorLikes = result.data.data
-        } else {
-          console.log(result.data.error);
-        }
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  }  
-  getUserLiked() {
-    const user_id = localStorage.getItem('user_id');
-    const token = localStorage.getItem('token');
-    const config = {
-      headers: {
-        Authorization: token,
-      },
-    };
-    axios
-      .get('http://localhost:3000/topics/userHasLiked/' + user_id, config)
-      .then((result) => {
-        if (result.data.success == true) {
-          this.userLiked = result.data.success
-
         } else {
           console.log(result.data.error);
         }

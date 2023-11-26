@@ -44,7 +44,8 @@ const actualizar = async function (
   order,
   priority,
   color,
-  owner_user_id
+  link,
+  owner_user_id,
 ) {
   console.log("actualizar topicos");
 
@@ -57,6 +58,7 @@ const actualizar = async function (
     order,
     priority,
     color,
+    link,
     owner_user_id,
   };
 
@@ -263,35 +265,35 @@ const listarTopicsPorLikes = async function () {
   }
 };
 
-const usuarioHaDadoLike = async function (userId) {//ver este metodo
+const usuarioHaDadoLike = async function (userId, topicId) {
   try {
     const result = await sequelize.query(`
       SELECT EXISTS(
         SELECT 1
         FROM topic_likes
-        WHERE user_id = :userId
+        WHERE user_id = :userId AND topic_id = :topicId
         LIMIT 1
-      ) as hasLiked;
+      ) as hasliked;
     `, {
-      replacements: { userId: userId },
+      replacements: { userId: userId, topicId: topicId },
       type: sequelize.QueryTypes.SELECT
     });
 
-    return result[0].hasLiked;
+    return result[0].hasliked;
   } catch (error) {
     console.log(error);
     throw error;
   }
 };
 
-const eliminarMegusta = async function (codigo) {
+const eliminarMegusta = async function (userId, topicId) {
   console.log("eliminar like");
   try {
     await sequelize.query(`
       DELETE FROM topic_likes
-      WHERE user_id = :codigo
+      WHERE user_id = :userId AND topic_id = :topicId
     `, {
-      replacements: { codigo: codigo },
+      replacements: { userId: userId, topicId: topicId },
       type: sequelize.QueryTypes.DELETE
     });
   } catch (error) {

@@ -41,6 +41,10 @@ const TopicsModel = sequelize.define("Topics", {
     allowNull: false,
     defaultValue: 0
   },
+  link: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
 }, {
   tableName: 'topics',
   timestamps: false

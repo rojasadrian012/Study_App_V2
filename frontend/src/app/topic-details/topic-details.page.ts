@@ -25,6 +25,7 @@ export class TopicDetailsPage implements OnInit {
   mostrarSelectUsuarios: boolean = false
 
   topicsShareMe: any = []
+  isLiked: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,6 +41,8 @@ export class TopicDetailsPage implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
+    this.userLiked()
+
   }
 
   ngOnInit() {
@@ -63,7 +66,6 @@ export class TopicDetailsPage implements OnInit {
           }
           if (result.data.topic != null) {
             this.topic = result.data.topic;
-
           } else {
             this.topic = {};
           }
@@ -110,6 +112,7 @@ export class TopicDetailsPage implements OnInit {
   }
 
   formatDate(date: string): string {
+
     const fecha = new Date(date);
     const horas = fecha.getHours();
     const minutos = fecha.getMinutes();
@@ -312,7 +315,7 @@ export class TopicDetailsPage implements OnInit {
     axios.post('http://localhost:3000/topics/like', data, config)
       .then((result) => {
         if (result.data.success) {
-          //aqui se puede mostrar un mensaje.          
+          this.isLiked = true
         }
       })
       .catch((error) => {
@@ -323,6 +326,8 @@ export class TopicDetailsPage implements OnInit {
 
   dislikeTopic() {
     const user_id = localStorage.getItem('user_id');
+    const topic_id = this.activatedRoute.snapshot.paramMap.get('id') as string;
+
     const token = localStorage.getItem('token');
     const config = {
       headers: {
@@ -330,10 +335,10 @@ export class TopicDetailsPage implements OnInit {
       },
     };
     axios
-      .delete('http://localhost:3000/topics/dislike/' + user_id, config)
+      .delete(`http://localhost:3000/topics/dislike/${user_id}/${topic_id}`, config)
       .then((result) => {
         if (result.data.success == true) {
-          //mostrar mensaje de dislike
+          this.isLiked = false
         } else {
           this.presentToast(result.data.error);
         }
@@ -342,4 +347,33 @@ export class TopicDetailsPage implements OnInit {
         this.presentToast(error.message);
       });
   }
+
+  userLiked() {
+    const user_id = localStorage.getItem('user_id');
+    const topic_id = this.activatedRoute.snapshot.paramMap.get('id') as string;
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    axios
+      .get(`http://localhost:3000/topics/userHasLiked/${user_id}/${topic_id}`, config)
+      .then((result) => {
+        if (result.data.success) {
+          this.isLiked = result.data.data
+        } else {
+          console.log(result.data.error);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
+
+  openLink(link: string) {
+    window.open(link, '_blank');
+  }
+
+
 }

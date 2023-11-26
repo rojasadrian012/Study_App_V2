@@ -66,6 +66,7 @@ const actualizar = async function (req, res) {
       req.body.order,
       req.body.priority,
       req.body.color,
+      req.body.link,
       req.body.owner_user_id
     );
     res.json({
@@ -263,10 +264,11 @@ const listarTopicsPorLikes = async function (req, res) {
 const usuarioHaDadoLike = async function (req, res) {
   try {
     const userId = req.params.userId;
-    const hasLiked = await topicsService.usuarioHaDadoLike(userId);
+    const topicId = req.params.topicId;
+    const hasLiked = await topicsService.usuarioHaDadoLike(userId, topicId);
     res.json({
       success: true,
-      hasLiked: hasLiked
+      data: hasLiked
     });
   } catch (error) {
     res.json({
@@ -276,10 +278,13 @@ const usuarioHaDadoLike = async function (req, res) {
   }
 };
 
+
 const eliminarMegusta = async function (req, res) {
   console.log("eliminar like controller");
   try {
-    await topicsService.eliminarMegusta(req.params.filtro || "");
+    const userId = req.params.userId;
+    const topicId = req.params.topicId;
+    await topicsService.eliminarMegusta(userId, topicId);
     res.json({
       success: true,
     });
