@@ -141,63 +141,75 @@ export class LoginPage implements OnInit {
       destinoEmail: this.emailRecuperacion,
       subject: 'Recuperación de Contraseña para StudyAPP',
       html: `
-      <html>
+      <!DOCTYPE html>
+      <html lang="es">
       <head>
+        <meta charset="UTF-8">
+        <title>Recuperación de Contraseña</title>
         <style>
           body {
-            font-family: 'Arial', sans-serif;
-            color: #333;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
+            font-family: 'Verdana', sans-serif;
+            background-color: #e8eff1;
+            color: #555;
+            line-height: 1.4;
           }
-          .header, .footer {
-            background-color: #f3f3f3;
-            padding: 10px;
+          .main-container {
+            margin: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+          }
+          .header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
             text-align: center;
-            border: 1px solid #ddd;
           }
-          .content {
+          .body-content {
             padding: 20px;
-          }
-          .content-block {
-            background-color: #f9f9f9;
-            border-left: 4px solid #4CAF50;
-            margin: 15px 0;
-            padding: 10px;
-            font-size: 16px;
-          }
-          .important {
-            color: black;
-            font-weight: bold;
-          }
-          .important_V2 {
-            color: #ff5252;
-            font-weight: bold;
+            background-color: white;
           }
           .footer {
-            font-size: 12px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            border-top: 1px solid #dee2e6;
+          }
+          .info-text {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+          }
+          .password {
+            display: inline-block;
+            background-color: #ffc107;
+            padding: 5px 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            color: black;
+            font-weight: bold;
           }
         </style>
       </head>
       <body>
-        <div class="header">
-          <h1 style="margin:0;">StudyAPP</h1>
-        </div>
-        <div class="content">
-          <div class="content-block">
-            <p style="color: black">Estimado usuario <strong>${newPassword.name} ${newPassword.lastName}</strong> de <strong>StudyAPP</strong>.</p>
-            <p style="color: black">Hemos recibido una solicitud para restablecer su contraseña. A continuación, le proporcionamos su nueva contraseña temporal:</p>
-            <p class="important">Nueva Contraseña: <span class="important_V2">${newPassword.newPassword}</span></p>
-            <p style="color: black">Por razones de seguridad, le recomendamos cambiar esta contraseña temporal tan pronto como inicie sesión en su cuenta. Si no realizó esta solicitud o necesita ayuda adicional, póngase en contacto con nuestro equipo de soporte.</p>
+        <div class="main-container">
+          <div class="header">
+            <h2>Recuperación de Contraseña - StudyAPP</h2>
           </div>
-          <div class="content-block">
-            <p>¡Gracias por usar StudyAPP!</p>
+          <div class="body-content">
+            <p>Estimado/a <strong>${newPassword.name} ${newPassword.lastName}</strong>,</p>
+            <p>Le informamos que hemos procesado su solicitud para restablecer la contraseña de su cuenta en <strong>StudyAPP</strong>.</p>
+            <p class="info-text">Su nueva contraseña temporal es: <span class="password">${newPassword.newPassword}</span></p>
+            <p>Por su seguridad, le sugerimos modificar esta contraseña temporal después de iniciar sesión. Si usted no ha solicitado este cambio o necesita asistencia, por favor contacte a nuestro soporte técnico.</p>
+            <p>¡Apreciamos su preferencia en StudyAPP!</p>
           </div>
-        </div>
-        <div style="color: black" class="footer">
-          Atentamente,<br/>
-          El equipo de StudyAPP.
+          <div class="footer">
+            Saludos cordiales,<br>
+            Equipo de StudyAPP
+          </div>
         </div>
       </body>
       </html>

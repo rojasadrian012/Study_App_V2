@@ -86,7 +86,7 @@ export class HomePage implements OnInit {
           this.temas = result.data.temas;
 
         } else {
-          console.log(result.data.error);
+          console.log('error:', result.data.error);
           this.presentToast(result.data.error);
         }
       })
