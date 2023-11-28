@@ -41,15 +41,20 @@ export class TopicListPage implements OnInit {
   ngOnInit() {
   }
 
-  async confirmDelete(id: string) {
+  async confirmDelete(topico: any) {
+    console.log(topico);
+
     const alert = await this.alertController.create({
       header: 'Mensaje',
-      message: 'Desea eliminar el registro?',
+      message: `
+      ¿Estas seguro?\n\n
+      Esto es irreversible se eliminara toda la informacion sobre ${topico.name}.
+      `,
       buttons: [
         {
           text: 'Aceptar',
           handler: () => {
-            this.deleteTopic(id);
+            this.deleteTopic(topico.id);
           },
         },
         {
@@ -97,6 +102,8 @@ export class TopicListPage implements OnInit {
         if (result.data.success == true) {
           this.presentToast('Topico Eliminado');
           this.getTopics();
+          this.getTopicsByLikes();
+          this.getTopicsShareMe();
         } else {
           this.presentToast(result.data.error);
         }
