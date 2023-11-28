@@ -19,6 +19,7 @@ export class LoginPage implements OnInit {
   isModal: boolean = false
   emailRecuperacion: string = ''
   usuarios: any = []
+  textSendEmail: string = '';
 
   constructor(
     private toastController: ToastController,
@@ -92,6 +93,8 @@ export class LoginPage implements OnInit {
   }
 
   showRecoverPasswordModal() {
+    this.emailRecuperacion = ''
+    this.textSendEmail = ''
     this.isModal = !this.isModal;
   }
 
@@ -219,6 +222,7 @@ export class LoginPage implements OnInit {
     axios.post('http://localhost:3000/themes_properties/enviaremail', dataSend, config)
       .then((result) => {
         if (result.data.success) {
+          this.textSendEmail = 'Ya se envió el email';
           this.presentToast('Email enviado!');
         }
       })
@@ -252,8 +256,5 @@ export class LoginPage implements OnInit {
   recuperarPassword() {
     this.getUsers()
   }
-
-
-
 
 }

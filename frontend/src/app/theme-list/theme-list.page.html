@@ -16,8 +16,8 @@
       <div class="icon-row">
         <ion-button color="dark" fill="outline" (click)="sortAZ()">A-Z</ion-button>
         <ion-button color="dark" fill="outline" (click)="sortZA()">Z-A</ion-button>
-        <ion-button color="dark" fill="outline" (click)="sortIdAsc()">ID Asc</ion-button>
-        <ion-button color="dark" fill="outline" (click)="sortIdDesc()">ID Desc</ion-button>
+        <!-- <ion-button color="dark" fill="outline" (click)="sortIdAsc()">ID Asc</ion-button>
+        <ion-button color="dark" fill="outline" (click)="sortIdDesc()">ID Desc</ion-button> -->
       </div>
     </ion-card-content>
 
@@ -27,19 +27,14 @@
         <ion-item *ngFor="let tema of temas">
           <ion-label [routerLink]="'/theme-edit/'+tema.id">{{tema.id}} - {{tema.name}} -
             {{tema.description}}</ion-label>
-          <!-- EDITAR TEMA-->
-          <ion-icon style=" font-size: 30px;" slot="end" name="create" [routerLink]="'/theme-edit/'
-        +
-        tema.id"></ion-icon>
-
           <!-- Visualizar -->
-          <ion-button (click)="cambiarPantalla(tema.id)">
-            <ion-icon slot="icon-only" name="eye-outline" style="font-size: 30px;"></ion-icon>
-          </ion-button>
-
+          <ion-icon style="font-size: 30px;" name="eye-outline" (click)="cambiarPantalla(tema.id)"></ion-icon>
+          <!-- EDITAR TEMA-->
+          <ion-icon style="font-size: 30px;" name="create" color="warning" [routerLink]="'/theme-edit/'+tema.id"></ion-icon>
           <!-- ELIMINAR TEMA-->
-          <ion-icon (click)="confirmDelete(tema.id)" style=" font-size: 30px;" slot="end" name="trash"> </ion-icon>
-          <ion-reorder slot="end"></ion-reorder>
+          <ion-icon style="font-size: 30px;" name="trash" color="danger" (click)="confirmDelete(tema.id)"> </ion-icon>
+
+          <ion-reorder style="margin-left: 0;" slot="end"></ion-reorder>
         </ion-item>
       </ion-reorder-group>
 
@@ -54,8 +49,8 @@
   </ion-card>
 
   <!-- AGREGAR TEMA-->
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button [routerLink]="'/theme-edit/0'">
+  <ion-fab style="padding-bottom: 100px;" slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button color="success" [routerLink]="'/theme-edit/0'">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

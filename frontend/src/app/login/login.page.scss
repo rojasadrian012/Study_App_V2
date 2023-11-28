@@ -1,38 +1,69 @@
-/* En tu archivo de estilos CSS */
-
-ion-card.login-card {
-  margin: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.login-container,
+.reset-password-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
-ion-title.login-title {
+.login-box,
+.reset-password-box {
+  width: 90%;
+  max-width: 400px;
+  background-color: #f4f7fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-title,
+h2 {
+  color: #007bff;
   text-align: center;
-  font-size: 24px;
-  font-weight: 600;
-  color: white;
+  margin-bottom: 24px;
 }
 
-ion-card-content.login-content {
-  padding: 16px;
-}
-
-ion-item {
+.input-group {
   margin-bottom: 16px;
 }
 
-ion-button.login-button {
-  --border-radius: 5px;
-  --background: linear-gradient(to bottom, rgb(51, 54, 255), #00c3ff);
-  --color: white;
-  font-weight: bold;
-  margin-top: 16px;
-}
-
 ion-input {
-  border: 2px solid #e0e0e0;
-  border-radius: 5px;
+  background-color: #ffffff;
+  border: 1px solid #d1e1ec;
+  border-radius: 4px;
+  padding: 15px;
+  font-size: 16px;
 }
 
+.login-button,
+.reset-password-button {
+  background-color: #007bff;
+  color: white;
+  margin-top: 8px;
+  border-radius: 4px;
+}
 
+.forgot-password {
+  color: #007bff;
+  margin-top: 16px;
+  font-size: 14px;
+}
 
+/* Esta regla es para asegurarse de que los botones se vean bien en Ionic */
+ion-button {
+  --padding-start: 0px;
+  --padding-end: 0px;
+  --padding-top: 0px;
+  --padding-bottom: 0px;
+  --background: none;
+  --box-shadow: none;
+  --border-radius: 4px;
+  --ripple-color: transparent;
+  /* Elimina el efecto de onda al hacer clic */
+}
+
+/* Oculta la línea debajo de los ion-input en foco */
+ion-item::part(native) {
+  --highlight-height: 0;
+}

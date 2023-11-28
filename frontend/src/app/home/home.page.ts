@@ -153,9 +153,10 @@ export class HomePage implements OnInit {
 
 
     axios
-      .post('http://localhost:3000/themes_properties/add', data, config)
-      .then(async (result) => {
-        if (result.data.success == true) {
+    .post('http://localhost:3000/themes_properties/add', data, config)
+    .then(async (result) => {
+      if (result.data.success == true) {
+          this.descripcion = ''
           this.presentToast('Guardado');
           this.getThemes()
           this.getThemesProperties()
