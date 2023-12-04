@@ -26,9 +26,18 @@
         <ion-label>Color:</ion-label>
         <input type="color" [(ngModel)]="topic.color" />
       </ion-item>
+      <div *ngIf="links.length > 0 && switchLink">
+        <ion-item *ngFor="let link of links; trackBy: trackByFn; let i = index">
+          <ion-input [label]="'Link ' + (i + 1)" [(ngModel)]="links[i]"></ion-input>
+          <ion-icon style="font-size: 30px;" color="danger" slot="end" name="trash"
+            (click)="eliminarLink(link)"></ion-icon>
+        </ion-item>
+      </div>
       <ion-item>
-        <ion-label position="stacked">Link del material:</ion-label>
-        <ion-input placeholder="Ingrese el link del material" [(ngModel)]="topic.link"></ion-input>
+        <ion-input [label]="'Nuevo link:'" [(ngModel)]="nuevoLink"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-icon color="primary" slot="end" name="add" (click)="agregarNuevoLink()"></ion-icon>
       </ion-item>
     </ion-list>
   </ion-card>

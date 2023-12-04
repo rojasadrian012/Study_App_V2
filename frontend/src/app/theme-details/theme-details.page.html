@@ -8,18 +8,34 @@
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content [fullscreen]="true">
   <ion-card *ngIf="themesProperties">
+    <!-- aca va ael titulo -->
     <ion-card-header>
       Propiedades del Tema
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-item *ngFor="let themesProperty of themesProperties">
-          <span>{{ themesProperty.property_name }} - {{ themesProperty.property_value }}</span>
-          <ion-button color="danger" style="margin-left: auto;" (click)="eliminarProperty(themesProperty.id, themesProperty.theme_id)">
-            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-          </ion-button>
+        <!-- Lista de propiedades iterada a través de *ngFor -->
+        <ion-item *ngFor="let properties of themesProperties">
+          <div>
+            <!-- Información del autor del comentario y fecha de creación -->
+            <span>  {{ properties.property_value }} - {{ properties.property_name }} </span>
+          </div>
+
+          <!-- con el buttons guardamos ambos botones y mandamos el final con end -->
+          <ion-buttons slot="end">
+            <!-- Botón de editar -->
+            <ion-button color="warning" (click)="abrirCerrarModal(properties)">
+              <ion-icon style="font-size: 25px;" slot="icon-only" name="create"></ion-icon>
+            </ion-button>
+            <!-- Botón de eliminar -->
+            <ion-button color="danger" (click)="confirmDeleteProperties(properties.id,properties.theme_id)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -27,36 +43,44 @@
 
   <!-- boton para agregar -->
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" style="margin-bottom: 30px;">
-     <ion-fab-button (click)="abrirCerrarModal()"> <!--abrimos el modal -->
+    <ion-fab-button color="success" (click)="abrirModalThemesProperties()"> <!--abrimos el modal -->
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
 </ion-content>
 
-<ion-modal [isOpen]="isOpen">
+<!-- Modal para agregar propiedades a los temas -->
+<ion-modal [isOpen]="isModalThemesProperties">
   <ng-template>
-    <ion-content >
+    <ion-content class="modal-content">
       <ion-card>
         <ion-card-header>
-          <ion-label position="floating">Ingresa las propiedades del nuevo tema</ion-label>
+          <!-- Encabezado del modal para agregar una propiedad -->
+          <ion-label class="comment-author" position="floating">{{titulo}} Propiedad</ion-label>
         </ion-card-header>
-
         <ion-card-content>
-          <ion-textarea [(ngModel)]="newThemeProperty.property_name" placeholder="Escribe el nombre"></ion-textarea>
-          <ion-input type="number" [(ngModel)]="newThemeProperty.property_value" placeholder="Escribe el valor"></ion-input>
-        </ion-card-content>       
+          <!-- Formulario para agregar nombre y valor de la propiedad -->
+          <ion-item>
+            <ion-label position="floating">Nombre de la propiedad</ion-label>
+            <ion-input [(ngModel)]="newThemeProperty.propertyName" type="text"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Valor de la propiedad</ion-label>
+            <ion-input [(ngModel)]="newThemeProperty.propertyValue" type="text"></ion-input>
+          </ion-item>
+        </ion-card-content>
       </ion-card>
 
       <ion-card>
         <ion-card-header>
-          <div style="display: flex; justify-content: center; align-items: center;"> <!--centrar botones -->
-            <ion-button (click)="abrirCerrarModal()"> <!--cerramos el modal -->
+          <!-- Botones para cerrar el modal o agregar la propiedad -->
+          <div class="icon-row">
+            <ion-button (click)="cerrarModalThemesProperties()">
               <ion-icon name="close-outline"></ion-icon>
               Cerrar
             </ion-button>
-            <ion-button style="margin-left: 5px;" (click)="guardarThemeProperty()">
-              <ion-icon name="save-outline"></ion-icon>
+            <ion-button style="margin-left: 5px;" (click)="guardarThemesProperties(titulo)">
+              <ion-icon name="add-outline"></ion-icon>
               Guardar
             </ion-button>
           </div>

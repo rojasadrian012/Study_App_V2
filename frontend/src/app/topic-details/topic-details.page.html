@@ -36,7 +36,10 @@
     <ion-card-content>
       <p>Color: <span [ngStyle]="{'color': topic.color}">{{ topic.color }}</span></p>
       <p>Fecha de Creación: {{ formatDate(topic.create_date) }}</p>
-      <ion-button (click)="openLink(topic.link)" fill="clear">Ver Material</ion-button>
+      <div *ngFor="let link of links; trackBy: trackByFn; let i = index">
+        <ion-button (click)="openLink(links[i])" fill="clear">Ver Material {{i + 1}}</ion-button>
+        <!-- <a href="{{links[i]}}">Ver Material {{i + 1}}</a> -->
+      </div>
     </ion-card-content>
 
   </ion-card>

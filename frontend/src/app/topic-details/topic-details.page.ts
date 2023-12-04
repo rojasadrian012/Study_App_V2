@@ -23,9 +23,9 @@ export class TopicDetailsPage implements OnInit {
   @ViewChild('selectUsuarios', { static: false }) selectUsuarios: IonSelect | undefined; // Agregamos "undefined"
   mostrarSelectUsuarios: boolean = false
   usuariosFiltrados: any = []
-
   topicsShareMe: any = []
   isLiked: boolean = false;
+  links: any[] = []
 
   constructor(
     private route: ActivatedRoute,
@@ -66,6 +66,10 @@ export class TopicDetailsPage implements OnInit {
           }
           if (result.data.topic != null) {
             this.topic = result.data.topic;
+            let linksTopic = this.topic.link;
+            linksTopic = linksTopic.slice(1, -1);
+            let arreglo = linksTopic.split('","');
+            this.links = arreglo.map((elemento: any) => elemento.replace(/"/g, ''));
           } else {
             this.topic = {};
           }
@@ -76,10 +80,7 @@ export class TopicDetailsPage implements OnInit {
       .catch((error) => {
         console.log(error.message);
       });
-
-    //listar comentarios por el topico
     this.getTopicsComments(id)
-
   }
 
   getTopicsComments(topic_id: string) {
@@ -99,7 +100,6 @@ export class TopicDetailsPage implements OnInit {
 
           if (this.topicoComentarios.length == 0) {
             this.Comentarios = "Sin Comentarios"
-            console.log(this.topicoComentarios.lenght);
           }
 
         } else {
@@ -377,5 +377,8 @@ export class TopicDetailsPage implements OnInit {
     window.open(link, '_blank');
   }
 
+  trackByFn(index: any) {
+    return index;
+  }
 
 }

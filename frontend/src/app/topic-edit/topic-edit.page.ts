@@ -16,12 +16,16 @@ export class TopicEditPage implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private platform = inject(Platform);
   topic: any = '';
-  accion = 'Agregar Topico';
+  accion = 'Crear Topico';
+  links: any[] = []
+  nuevoLink: string = ''
+  openNewLink: boolean = false
+  switchLink: boolean = false
 
   constructor(
     private toastController: ToastController,
     private router: Router
-  ) {}
+  ) { }
 
   ionViewWillEnter(): void {
     //verificar si el usuario no esta logueado
@@ -39,20 +43,31 @@ export class TopicEditPage implements OnInit {
         Authorization: token,
       },
     };
-    //con este comando se recupera el id que se pasa
     const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
-    // this.message = this.data.getMessageById(parseInt(id, 10));
     axios
       .get('http://localhost:3000/topics/buscarPorCodigo/' + id, config)
       .then((result) => {
         if (result.data.success == true) {
           if (id !== '0') {
+            this.switchLink = true
             this.accion = 'Editar Topico';
-          }
-          if (result.data.topic != null) {
-            this.topic = result.data.topic;
+            if (result.data.topic != null) {
+              this.topic = result.data.topic;
+              let linksTopic = this.topic.link;
+              linksTopic = linksTopic.slice(1, -1);
+              let arreglo = linksTopic.split('","');
+              this.links = arreglo.map((elemento: any) => elemento.replace(/"/g, ''));
+              console.log(this.links);
+            } else {
+              this.topic = {};
+              this.links = []; // Inicializa links para un tópico sin links
+            }
           } else {
-            this.topic = {};
+            // Aquí manejas el caso de crear un nuevo tópico
+            this.topic = {
+              // Inicializa las propiedades de un nuevo tópico si es necesario
+            };
+            this.links = ['']; // Inicializa con un elemento vacío para permitir la entrada de un nuevo link
           }
         } else {
           console.log(result.data.error);
@@ -62,6 +77,7 @@ export class TopicEditPage implements OnInit {
         console.log(error.message);
       });
   }
+
 
   getBackButtonText() {
     const isIos = this.platform.is('ios');
@@ -75,6 +91,9 @@ export class TopicEditPage implements OnInit {
         Authorization: token,
       },
     };
+
+    this.topic.link = '"' + this.links.join('","') + '"';
+
     let fecha = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
     var data = {
       id: this.topic.id,
@@ -84,13 +103,16 @@ export class TopicEditPage implements OnInit {
       order: this.topic.order,
       priority: this.topic.priority,
       color: this.topic.color,
-      link: this.topic.link
+      link: this.topic.link,
       //owner_user_id: this.topico.owner_user_id,
     };
+
     axios
       .post('http://localhost:3000/topics/update', data, config)
       .then(async (result) => {
         if (result.data.success == true) {
+          this.nuevoLink = ''
+          this.openNewLink = false
           this.presentToast('Topico Guardado');
           this.router.navigate(['/topic-list']);
         } else {
@@ -110,4 +132,27 @@ export class TopicEditPage implements OnInit {
     });
     await toast.present();
   }
+
+  trackByFn(index: any) {
+    return index;
+  }
+
+  agregarNuevoLink() {
+    if (this.nuevoLink !== '') {
+      if (this.links.length == 1 && this.switchLink == false) {
+        this.links.shift()
+        this.switchLink = true
+      }
+      this.links.push(this.nuevoLink)
+      this.nuevoLink = ''
+    }
+  }
+
+  eliminarLink(link: string) {
+    const index = this.links.indexOf(link);
+    if (index > -1) {
+      this.links.splice(index, 1);
+    }
+  }
+
 }
